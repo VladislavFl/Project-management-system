@@ -1,3 +1,25 @@
-﻿@{
-    Layout = "_Layout";
+﻿@using System.Security.Claims
+@{
+    if (Context.User.FindFirstValue(ClaimsIdentity.DefaultRoleClaimType) != null)
+    {
+        switch (Context.User.FindFirstValue(ClaimsIdentity.DefaultRoleClaimType))
+        {
+            case "Пользователь":
+                Layout = "_LayoutStyle";
+                break;
+            case "Владелец проекта":
+                Layout = "_LayoutStyle";
+                break;
+            case "Администратор":
+                Layout = "_LayoutAdmin";
+                break;
+            default:
+                Layout = "_LayoutGuest";
+                break;
+        }
+    }
+    else
+    {
+        Layout = "_LayoutGuest";
+    }
 }

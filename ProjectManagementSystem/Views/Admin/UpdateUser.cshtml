@@ -1,0 +1,62 @@
+﻿@model User
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-4"></div>
+        <div class="col-md-4">
+            <form asp-controller="Admin" asp-action="UpdateUser" method="post">
+                <input asp-for="Id" hidden="hidden" />
+                <input asp-for="Password" hidden="hidden" />
+
+                <div class="form-group">
+                    <label asp-for="Name">ФИО</label>
+                    <input asp-for="Name" class="form-control" />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="EmailAddress">E-mail</label>
+                    <input asp-for="EmailAddress" class="form-control" />
+                    <span asp-validation-for="EmailAddress" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="RoleId">Роль</label>
+                    <select asp-for="RoleId" class="form-control" asp-items="ViewBag.Roles"></select>
+                </div>
+                <div class="form-group">
+                    <input asp-for="Id" class="form-control" hidden="hidden" />
+                </div>
+                <div class="form-group m-5 text-center">
+                    <input type="submit" value="Сохранить" class="btn btn-dark mr-2" />
+
+                    @{
+                        if (Model.Id != Guid.Parse("166F4B58-F165-4A72-AB5B-B2406C80D751"))
+                        {
+                            <button class="btn btn-outline-danger" type="button" data-toggle="modal" data-target="#deletionModal">Удалить</button>
+                        }
+                    }
+                    <a asp-controller="Admin" asp-action="Index" class="btn btn-outline-dark mr-2">Назад</a>
+                </div>
+            </form>
+        </div>
+        <div class="col-md-4"></div>
+    </div>
+</div>
+
+<div class="modal fade" id="deletionModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content justify-content-between" style="height: 200px; background-color: #6b6b6b; border-radius: 0.5rem;">
+
+            <div class="text-center text-white font-weight-bold mt-3" style="font-size: 22px">
+                Удалить пользователя?
+            </div>
+            <div class="modal-footer justify-content-between" style="border-top:0px ">
+                <button type="button" class="btn btn-light pl-3 pr-3" data-dismiss="modal">Отмена</button>
+
+                <form asp-controller="Admin" asp-action="DeleteUser" method="post">
+                    <input asp-for="Id" hidden="hidden" />
+                    <input type="submit" value="Удалить" class="btn btn-danger" />
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
