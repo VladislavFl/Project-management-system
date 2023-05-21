@@ -81,7 +81,8 @@ namespace ProjectManagementSystem.Controllers
             var claims = new List<Claim>
             {
                 new(ClaimsIdentity.DefaultNameClaimType, user.EmailAddress),
-                new(ClaimsIdentity.DefaultRoleClaimType, user.Role?.Name!)
+                new(ClaimsIdentity.DefaultRoleClaimType, user.Role?.Name!),
+                new(ClaimsIdentity.DefaultNameClaimType, user.Id.ToString()),
             };
 
             var id = new ClaimsIdentity(claims, "ApplicationCookie", ClaimsIdentity.DefaultNameClaimType,

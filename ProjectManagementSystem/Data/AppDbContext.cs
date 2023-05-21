@@ -14,6 +14,8 @@ namespace ProjectManagementSystem.Data
 
         public DbSet<Role> Roles { get; set; }
         public DbSet<User> Users { get; set; }
+        public DbSet<Tasks> Tasks { get; set; }
+        public DbSet<Project> Projects { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

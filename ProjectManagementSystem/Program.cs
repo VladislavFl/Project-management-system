@@ -28,6 +28,7 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
     });
 
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IProjectTasksService, ProjectTasksService>();
 
 builder.Services.AddControllersWithViews();
 

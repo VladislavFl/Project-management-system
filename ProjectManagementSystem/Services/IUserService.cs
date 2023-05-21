@@ -12,7 +12,7 @@ namespace ProjectManagementSystem.Services
     public interface IUserService
     {
         Task<IEnumerable<User>> GetAllUsersAsync();
-        Task<IEnumerable<User>> GetUserForProductionAsync();
+        Task<IEnumerable<User>> GetUserForTaskAsync();
         Task<User> GetUserByLoginAsync(string login);
         Task<User> GetUserByLoginAndPasswordAsync(string login, string password);
         Task<User> GetUserAsync(Guid userId);
@@ -41,10 +41,10 @@ namespace ProjectManagementSystem.Services
             return await _db.Users.Include(u => u.Role).AsNoTracking().ToListAsync();
         }
 
-        public async Task<IEnumerable<User>> GetUserForProductionAsync()
+        public async Task<IEnumerable<User>> GetUserForTaskAsync()
         {
             return await _db.Users.Include(u => u.Role)
-                .Where(u => u.Role.Name == "Рабочий")
+                .Where(u => u.Role.Name == "Пользователь")
                 .AsNoTracking().ToListAsync();
         }
 
@@ -87,6 +87,7 @@ namespace ProjectManagementSystem.Services
         {
             var user = new User()
             {
+                Id = Guid.NewGuid(),
                 Name = model.Name,
                 EmailAddress = model.Email,
                 Password = model.Password,

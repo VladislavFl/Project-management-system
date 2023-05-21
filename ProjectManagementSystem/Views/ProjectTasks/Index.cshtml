@@ -1,0 +1,50 @@
+﻿@model System.Collections.Generic.IEnumerable<ProjectManagementSystem.Models.Tasks>
+
+<div class="container">
+    <div class="row">
+        <div class="text-right col-sm">
+            <a asp-controller="ProjectTasks" asp-action="TaskCreate" class="btn btn-dark">Создать задачу</a>
+        </div>
+    </div>
+    <br />
+</div>
+
+
+<div id="printTable">
+    <div class="row w-100 m-0">
+        <div class="col-md-12 m-0 p-0">
+
+            <table class="table table-striped border">
+                <thead>
+                    <tr>
+                        <th scope="col">
+                            <a>Название</a>
+                        </th>
+                        <th scope="col">
+                            <a>Приоритет</a>
+                        </th>
+                        <th scope="col">
+                            <a>Техническое задание</a>
+                        </th>
+                        <th scope="col">
+                            <a>Исполнитель</a>
+                        </th>
+                        <th class="col-1" scope="col"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@item.Name</td>
+                            <td>@item.Priorety</td>
+                            <td>@item.Description</td>
+                            <td>@item.User.Name</td>
+                            <td><a asp-controller="ProjectTasks" asp-action="TaskDetail" asp-route-productId="@item.Id">Подробнее</a></td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
