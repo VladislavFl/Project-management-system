@@ -24,18 +24,19 @@ namespace ProjectManagementSystem.Controllers
         }
 
         [Authorize(Roles = "Администратор, Пользователь, Владелец проекта")]
-        public async Task<IActionResult> Index(Guid userId)
+        public async Task<IActionResult> Index()
         {
-            var tasks = await _projectTasksService.GetAllTaskByUserAsync(userId);
+            var userEmail = HttpContext.User.Identity?.Name!;
+            var tasks = await _projectTasksService.GetAllTaskByUserAsync(userEmail);
             return View(tasks);
         }
 
-        [Authorize(Roles = "Администратор, Пользователь, Владелец проекта")]
+        /*[Authorize(Roles = "Администратор, Пользователь, Владелец проекта")]
         [HttpPost]
         public async Task<IActionResult> Index2(Guid userId)
         {
             return View(await _projectTasksService.GetAllTaskByUserAsync(userId));
-        }
+        }*/
 
         [Authorize(Roles = "Администратор, Пользователь, Владелец проекта")]
         public async Task<IActionResult> TaskDetail(Guid productId)

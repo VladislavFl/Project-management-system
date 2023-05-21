@@ -13,7 +13,7 @@ namespace ProjectManagementSystem.Services
         Task<IEnumerable<Tasks>> GetAllTasksAsync();
         //Task<IEnumerable<Tasks>> GetAllProductForRepair();
         //Task<IEnumerable<Tasks>> GetAllProductsForShipmentAsync();
-        Task<IEnumerable<Tasks>> GetAllTaskByUserAsync(Guid userId);
+        Task<IEnumerable<Tasks>> GetAllTaskByUserAsync(string email);
         Task<Tasks> GetProjectTasksAsync(Guid tasksId);
         Task<Guid> AddTaskAsync(Tasks tasks);
         Task<Guid> EditTaskAsync(Tasks tasks);
@@ -49,10 +49,10 @@ namespace ProjectManagementSystem.Services
             return result;
         }*/
 
-        public async Task<IEnumerable<Tasks>> GetAllTaskByUserAsync(Guid userId)
+        public async Task<IEnumerable<Tasks>> GetAllTaskByUserAsync(string email)
         {
             return await _db.Tasks.Include(p => p.User)
-                .Where(p => p.User.Id == userId)
+                .Where(p => p.User.EmailAddress == email)
                 .AsNoTracking().ToListAsync();
         }
 

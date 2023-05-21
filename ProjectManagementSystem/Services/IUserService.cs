@@ -16,6 +16,7 @@ namespace ProjectManagementSystem.Services
         Task<User> GetUserByLoginAsync(string login);
         Task<User> GetUserByLoginAndPasswordAsync(string login, string password);
         Task<User> GetUserAsync(Guid userId);
+        Task<User> GetUserAsync(string userEmail);
         Task<Guid> AddUserAsync(User user);
         Task<Guid> AddUserFromFileAsync(User user);
         Task AddUserAsync(RegisterViewModel model);
@@ -65,6 +66,12 @@ namespace ProjectManagementSystem.Services
         {
             return await _db.Users.Include(u => u.Role)
                 .AsNoTracking().FirstOrDefaultAsync(u => u.Id == userId);
+        }
+
+        public async Task<User> GetUserAsync(string userEmail)
+        {
+            return await _db.Users.Include(u => u.Role)
+                .AsNoTracking().FirstOrDefaultAsync(u => u.EmailAddress == userEmail);
         }
 
         public async Task<Guid> AddUserAsync(User user)

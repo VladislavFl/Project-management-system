@@ -39,7 +39,7 @@ namespace ProjectManagementSystem.Controllers
                 return RedirectToAction("OutInfoRegisterUser", "Account");
             }
 
-            ModelState.AddModelError("", "Неверный логин и (или) пароль");
+            ModelState.AddModelError("", "Такой пользователь уже существует");
             return View(model);
         }
 
@@ -81,8 +81,7 @@ namespace ProjectManagementSystem.Controllers
             var claims = new List<Claim>
             {
                 new(ClaimsIdentity.DefaultNameClaimType, user.EmailAddress),
-                new(ClaimsIdentity.DefaultRoleClaimType, user.Role?.Name!),
-                new(ClaimsIdentity.DefaultNameClaimType, user.Id.ToString()),
+                new(ClaimsIdentity.DefaultRoleClaimType, user.Role?.Name!)
             };
 
             var id = new ClaimsIdentity(claims, "ApplicationCookie", ClaimsIdentity.DefaultNameClaimType,

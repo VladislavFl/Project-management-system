@@ -3,7 +3,13 @@
 <div class="container">
     <div class="row">
         <div class="text-right col-sm">
-            <a asp-controller="ProjectTasks" asp-action="TaskCreate" class="btn btn-dark">Создать задачу</a>
+            @{
+                var role = User.Claims.FirstOrDefault(x => x.Value == "Пользователь");
+                if (role == null)
+                {
+                    <a asp-controller="ProjectTasks" asp-action="TaskCreate" class="btn btn-dark">Создать задачу</a>
+                }
+            }
         </div>
     </div>
     <br />
