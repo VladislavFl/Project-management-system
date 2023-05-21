@@ -1,5 +1,20 @@
 ﻿@model System.Collections.Generic.IEnumerable<ProjectManagementSystem.Models.Tasks>
 
+
+<style type="text/css">
+    .medium-priority {
+        background-color: #fad850;
+    }
+
+    .high-priority {
+        background-color: #fa5050;
+    }
+
+    .low-priority {
+        background-color: #50fa7d;
+    }
+</style>
+
 <div class="container">
     <div class="row">
         <div class="text-right col-sm">
@@ -16,7 +31,7 @@
 </div>
 
 
-<div id="printTable">
+<div>
     <div class="row w-100 m-0">
         <div class="col-md-12 m-0 p-0">
 
@@ -41,7 +56,20 @@
                 <tbody>
                     @foreach (var item in Model)
                     {
-                        <tr>
+                        string val = string.Empty;
+                        if (item.Priorety == 1)
+                        {
+                            val = "high-priority";
+                        }
+                        else if (item.Priorety == 2)
+                        {
+                            val = "medium-priority";
+                        }
+                        else if (item.Priorety == 3)
+                        {
+                            val = "low-priority";
+                        }
+                        <tr class=@val>
                             <td>@item.Name</td>
                             <td>@item.Priorety</td>
                             <td>@item.Description</td>

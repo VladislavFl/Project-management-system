@@ -12,12 +12,12 @@
                 </div>
                 <div class="form-group">
                     <label asp-for="Priorety">Приоритет</label>
-                    <input asp-for="Priorety" class="form-control" disabled="disabled" />
+                    <select asp-for="Priorety" class="form-control" disabled="disabled" asp-items="@ViewBag.Priorety"></select>
                     <span asp-validation-for="Priorety"></span>
                 </div>
                 <div class="form-group">
                     <label asp-for="Description">Техническое задание</label>
-                    <input asp-for="Description" class="form-control" disabled="disabled" />
+                    <textarea asp-for="Description" class="form-control" disabled="disabled"></textarea>
                     <span asp-validation-for="Description"></span>
                 </div>
                 <div class="form-group">

@@ -18,6 +18,7 @@ namespace ProjectManagementSystem.Services
         Task<Guid> AddTaskAsync(Tasks tasks);
         Task<Guid> EditTaskAsync(Tasks tasks);
         Task DeleteTaskAsync(Guid tasksId);
+        Dictionary<short, string> FillingPrioreties();
     }
 
     public class ProjectTasksService : IProjectTasksService
@@ -89,6 +90,17 @@ namespace ProjectManagementSystem.Services
             if (tasks != null)
                 _db.Tasks.Remove(tasks);
             await _db.SaveChangesAsync();
+        }
+
+        public Dictionary<short, string> FillingPrioreties()
+        {
+            Dictionary<short, string> dict = new Dictionary<short, string>
+            {
+                { 1, "Критически важно" },
+                { 2, "Средний уровень важности" },
+                { 3, "Низкий уровень важности" }
+            };
+            return dict;
         }
     }
 }

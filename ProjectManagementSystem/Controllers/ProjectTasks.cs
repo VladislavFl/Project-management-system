@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Authorization;
 using System.IO;
 using System.Security.Claims;
 using System.Security.Principal;
+using System.Collections;
 
 namespace ProjectManagementSystem.Controllers
 {
@@ -26,9 +27,18 @@ namespace ProjectManagementSystem.Controllers
         [Authorize(Roles = "Администратор, Пользователь, Владелец проекта")]
         public async Task<IActionResult> Index()
         {
-            var userEmail = HttpContext.User.Identity?.Name!;
-            var tasks = await _projectTasksService.GetAllTaskByUserAsync(userEmail);
-            return View(tasks);
+            var role = User.Claims.FirstOrDefault(x => x.Value == "Пользователь");
+            if (role == null)
+            {
+                var tasks = await _projectTasksService.GetAllTasksAsync();
+                return View(tasks);
+            }
+            else
+            {
+                var userEmail = HttpContext.User.Identity?.Name!;
+                var tasks = await _projectTasksService.GetAllTaskByUserAsync(userEmail);
+                return View(tasks);
+            }
         }
 
         /*[Authorize(Roles = "Администратор, Пользователь, Владелец проекта")]
@@ -42,6 +52,7 @@ namespace ProjectManagementSystem.Controllers
         public async Task<IActionResult> TaskDetail(Guid productId)
         {
             ViewBag.Users = new SelectList(await _userService.GetUserForTaskAsync(), "Id", "Name");
+            ViewBag.Priorety = new SelectList(_projectTasksService.FillingPrioreties(), "Key", "Value");
             return View(await _projectTasksService.GetProjectTasksAsync(productId));
         }
 
@@ -49,6 +60,7 @@ namespace ProjectManagementSystem.Controllers
         public async Task<IActionResult> TaskCreate()
         {
             ViewBag.Users = new SelectList(await _userService.GetUserForTaskAsync(), "Id", "Name");
+            ViewBag.Priorety = new SelectList(_projectTasksService.FillingPrioreties(), "Key", "Value");
             return View();
         }
 
@@ -72,6 +84,7 @@ namespace ProjectManagementSystem.Controllers
         public async Task<IActionResult> TaskUpdate(Guid productId)
         {
             ViewBag.Users = new SelectList(await _userService.GetUserForTaskAsync(), "Id", "Name");
+            ViewBag.Priorety = new SelectList(_projectTasksService.FillingPrioreties(), "Key", "Value");
             return View(await _projectTasksService.GetProjectTasksAsync(productId));
         }
 
