@@ -45,6 +45,7 @@ namespace ProjectManagementSystem.Controllers
         public async Task<IActionResult> ProjectCreate()
         {
             ViewBag.Users = new SelectList(await _userService.GetUserForTaskAsync(), "Id", "Name");
+            ViewBag.Team = new SelectList(await _userService.GetUserForAddingToProjectAsync(), "Id", "Name");
             return View();
         }
 
@@ -53,6 +54,7 @@ namespace ProjectManagementSystem.Controllers
         public async Task<IActionResult> ProjectCreate(Models.Project project)
         {
             var projectId = await _projectService.AddProjectAsync(project);
+            var user = await _userService.EditUserForProjectAsync(project.User.Id);
             return RedirectToAction("ProjectDetail", new { projectId });
         }
 

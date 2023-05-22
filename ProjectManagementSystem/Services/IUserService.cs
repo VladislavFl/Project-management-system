@@ -13,6 +13,7 @@ namespace ProjectManagementSystem.Services
     {
         Task<IEnumerable<User>> GetAllUsersAsync();
         Task<IEnumerable<User>> GetUserForTaskAsync();
+        Task<IEnumerable<User>> GetUserForAddingToProjectAsync();
         Task<User> GetUserByLoginAsync(string login);
         Task<User> GetUserByLoginAndPasswordAsync(string login, string password);
         Task<User> GetUserAsync(Guid userId);
@@ -21,6 +22,7 @@ namespace ProjectManagementSystem.Services
         Task<Guid> AddUserFromFileAsync(User user);
         Task AddUserAsync(RegisterViewModel model);
         Task<Guid> EditUserAsync(User user);
+        Task<Guid> EditUserForProjectAsync(Guid id);
         Task<IEnumerable<Role>> GetAllRoleAsync();
         Task<bool> CheckUserByLoginAsync(string login);
         Task<bool> CheckUserByLoginAndPasswordAsync(string login, string password);
@@ -46,6 +48,13 @@ namespace ProjectManagementSystem.Services
         {
             return await _db.Users.Include(u => u.Role)
                 .Where(u => u.Role.Name != "Пользователь")
+                .AsNoTracking().ToListAsync();
+        }
+
+        public async Task<IEnumerable<User>> GetUserForAddingToProjectAsync()
+        {
+            return await _db.Users.Include(u => u.Role)
+                .Where(u => u.Role.Name == "Пользователь")
                 .AsNoTracking().ToListAsync();
         }
 
@@ -111,6 +120,15 @@ namespace ProjectManagementSystem.Services
 
         public async Task<Guid> EditUserAsync(User user)
         {
+            _db.Users.Update(user);
+            await _db.SaveChangesAsync();
+
+            return user.Id;
+        }
+
+        public async Task<Guid> EditUserForProjectAsync(Guid id)
+        {
+            var user = _db.Users.Where(x => x.Id == id).FirstOrDefault();
             _db.Users.Update(user);
             await _db.SaveChangesAsync();
 
