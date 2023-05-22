@@ -1,0 +1,44 @@
+﻿@model ProjectManagementSystem.Models.Tasks
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-4"></div>
+        <div class="col-md-4">
+            <form asp-action="TaskUpdate" asp-controller="ProjectTasks" method="post">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input asp-for="Id" hidden="hidden" />
+                <div class="form-group">
+                    <label asp-for="Name">Название</label>
+                    <input asp-for="Name" class="form-control" />
+                    <span asp-validation-for="Name" style="color: red;"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Priorety">Приоритет</label>
+                    <select asp-for="Priorety" class="form-control" asp-items="@ViewBag.Priorety"></select>
+                    <span asp-validation-for="Priorety" style="color: red;"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Description">Техническое задание</label>
+                    <textarea asp-for="Description" class="form-control"></textarea>
+                    <span asp-validation-for="Description" style="color: red;"></span>
+                </div>
+                <div>
+                    <label asp-for="UserId">Выбрать пользователя</label>
+                    <select asp-for="UserId" class="form-control" asp-items="@ViewBag.Users"></select>
+                    <span asp-validation-for="UserId" style="color: red;"></span>
+                </div>
+                <br />
+                <div class="form-group">
+                    <input type="submit" value="Изменить" class="btn btn-outline-dark" />
+                </div>
+            </form>
+            <a asp-controller="ProjectTasks" asp-action="Index">Назад к списку</a>
+        </div>
+        <div class="col-md-4"></div>
+    </div>
+</div>
+
+@section scripts{
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+}

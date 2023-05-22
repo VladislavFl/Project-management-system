@@ -1,0 +1,49 @@
+﻿@model System.Collections.Generic.IEnumerable<ProjectManagementSystem.Models.Project>
+
+
+<div class="container">
+    <div class="row">
+        <div class="text-right col-sm">
+            @{
+                var role = User.Claims.FirstOrDefault(x => x.Value == "Пользователь");
+                if (role == null)
+                {
+                    <a asp-controller="Project" asp-action="ProjectCreate" class="btn btn-dark">Создать проект</a>
+                }
+            }
+        </div>
+    </div>
+    <br />
+</div>
+
+
+<div>
+    <div class="row w-100 m-0">
+        <div class="col-md-12 m-0 p-0">
+
+            <table class="table table-striped border">
+                <thead>
+                    <tr>
+                        <th scope="col">
+                            <a>Название</a>
+                        </th>
+                        <th scope="col">
+                            <a>Владелец</a>
+                        </th>
+                        <th class="col-1" scope="col"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@item.Name</td>
+                            <td>@item.User.Name</td>
+                            <td><a asp-controller="Project" asp-action="ProjectDetail" asp-route-projectId="@item.Id">Подробнее</a></td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

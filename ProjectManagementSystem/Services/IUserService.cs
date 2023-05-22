@@ -45,7 +45,7 @@ namespace ProjectManagementSystem.Services
         public async Task<IEnumerable<User>> GetUserForTaskAsync()
         {
             return await _db.Users.Include(u => u.Role)
-                .Where(u => u.Role.Name == "Пользователь")
+                .Where(u => u.Role.Name != "Пользователь")
                 .AsNoTracking().ToListAsync();
         }
 
