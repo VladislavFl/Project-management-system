@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using ProjectManagementSystem.Data;
 using ProjectManagementSystem.Models;
+using ProjectManagementSystem.Controllers;
 
 namespace ProjectManagementSystem.Services
 {
@@ -13,7 +14,7 @@ namespace ProjectManagementSystem.Services
         Task<IEnumerable<Tasks>> GetAllTasksAsync();
         Task<IEnumerable<Tasks>> GetAllTaskByUserAsync(string email);
         Task<Tasks> GetProjectTasksAsync(Guid tasksId);
-        Task<Guid> AddTaskAsync(Tasks tasks);
+        Task<Guid> AddTaskAsync(Tasks tasks, string projectId);
         Task<Guid> EditTaskAsync(Tasks tasks);
         Task DeleteTaskAsync(Guid tasksId);
         Dictionary<short, string> FillingPrioreties();
@@ -47,9 +48,12 @@ namespace ProjectManagementSystem.Services
                 .FirstOrDefaultAsync(p => p.Id == tasksId);
         }
 
-        public async Task<Guid> AddTaskAsync(Tasks tasks)
+        public async Task<Guid> AddTaskAsync(Tasks tasks, string projectId)
         {
             await _db.Tasks.AddAsync(tasks);
+            var project = _db.Projects.Where(x => x.Id == Guid.Parse(projectId)).FirstOrDefault();
+            if (project != null) 
+                tasks.Project = project;
             await _db.SaveChangesAsync();
 
             return tasks.Id;

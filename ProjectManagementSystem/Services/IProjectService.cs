@@ -20,6 +20,7 @@ namespace ProjectManagementSystem.Services
         Task<Guid> AddProjectAsync(ProjectTeamViewModel projects);
         Task<Guid> EditProjectAsync(ProjectTeamViewModel projects);
         Task DeleteProjectAsync(Guid projectsId);
+        Dictionary<short, string> FillingKII();
     }
 
     public class ProjectService : IProjectService
@@ -46,9 +47,8 @@ namespace ProjectManagementSystem.Services
 
         public async Task<Project> GetProjectsAsync(Guid projectsId)
         {
-            var project =  await _db.Projects.Include(p => p.User).AsNoTracking()
+            return await _db.Projects.Include(p => p.User).AsNoTracking()
                 .FirstOrDefaultAsync(p => p.Id == projectsId);
-            return project;
         }
 
         public async Task<Guid> AddProjectAsync(ProjectTeamViewModel model)
@@ -90,6 +90,16 @@ namespace ProjectManagementSystem.Services
             if (projects != null)
                 _db.Projects.Remove(projects);
             await _db.SaveChangesAsync();
+        }
+
+        public Dictionary<short, string> FillingKII()
+        {
+            Dictionary<short, string> dict = new Dictionary<short, string>
+            {
+                { 0, "Нет" },
+                { 1, "Да" }
+            };
+            return dict;
         }
     }
 }

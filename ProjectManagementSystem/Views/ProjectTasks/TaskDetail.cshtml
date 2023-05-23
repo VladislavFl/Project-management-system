@@ -24,6 +24,11 @@
                     <label asp-for="UserId">Исполнитель</label>
                     <select asp-for="UserId" class="form-control" disabled="disabled" asp-items="ViewBag.Users"></select>
                 </div>
+                <div>
+                    <label asp-for="ProjectId">Проект</label>
+                    <select asp-for="ProjectId" class="form-control" asp-items="@ViewBag.Projects"></select>
+                    <span asp-validation-for="ProjectId" style="color: red;"></span>
+                </div>
 
                 <a asp-controller="ProjectTasks" asp-action="TaskUpdate" asp-route-productId="@Model.Id" class="btn btn-outline-dark">Изменить</a>
                 <input asp-for="Id" hidden="hidden" />

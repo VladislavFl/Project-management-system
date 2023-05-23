@@ -27,6 +27,11 @@
                     <select asp-for="UserId" class="form-control" asp-items="@ViewBag.Users"></select>
                     <span asp-validation-for="UserId" style="color: red;"></span>
                 </div>
+                <div>
+                    <label asp-for="ProjectId">Выбрать проект</label>
+                    <select name="projectVal" asp-for="ProjectId" class="form-control" asp-items="@ViewBag.Projects"></select>
+                    <span asp-validation-for="ProjectId" style="color: red;"></span>
+                </div>
                 <br />
                 <div class="form-group">
                     <input type="submit" value="Изменить" class="btn btn-outline-dark" />

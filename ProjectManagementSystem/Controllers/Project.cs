@@ -11,7 +11,7 @@ namespace ProjectManagementSystem.Controllers
     {
         private readonly IProjectService _projectService;
         private readonly IUserService _userService;
-        private Guid _currentProjectId;
+        private static Guid _currentProjectId;
 
         public Project(IProjectService projectService, IUserService userService)
         {
@@ -41,6 +41,7 @@ namespace ProjectManagementSystem.Controllers
         {
             ViewBag.Users = new SelectList(await _userService.GetUserForTaskAsync(), "Id", "Name");
             ViewBag.Team = new SelectList(await _userService.GetUserForAddingToProjectAsync(), "Id", "Name");
+            ViewBag.KII = new SelectList(_projectService.FillingKII(), "Key", "Value");
             _currentProjectId = projectId;
             return View(await _projectService.GetProjectsAsync(projectId));
         }
@@ -50,6 +51,7 @@ namespace ProjectManagementSystem.Controllers
         {
             ViewBag.Users = new SelectList(await _userService.GetUserForTaskAsync(), "Id", "Name");
             ViewBag.Team = new SelectList(await _userService.GetUserForAddingToProjectAsync(), "Id", "Name");
+            ViewBag.KII = new SelectList(_projectService.FillingKII(), "Key", "Value");
             return View();
         }
 
@@ -80,6 +82,7 @@ namespace ProjectManagementSystem.Controllers
         {
             ViewBag.Users = new SelectList(await _userService.GetUserForTaskAsync(), "Id", "Name");
             ViewBag.Team = new SelectList(await _userService.GetUserForAddingToProjectAsync(), "Id", "Name");
+            ViewBag.KII = new SelectList(_projectService.FillingKII(), "Key", "Value");
             return View(await _projectService.GetProjectsAsync(_currentProjectId));
         }
 

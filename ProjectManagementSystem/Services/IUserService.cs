@@ -14,6 +14,7 @@ namespace ProjectManagementSystem.Services
         Task<IEnumerable<User>> GetAllUsersAsync();
         Task<IEnumerable<User>> GetUserForTaskAsync();
         Task<IEnumerable<User>> GetUserForAddingToProjectAsync();
+        Task<IEnumerable<Project>> GetProjectForTaskAsync(Guid id);
         Task<User> GetUserByLoginAsync(string login);
         Task<User> GetUserByLoginAndPasswordAsync(string login, string password);
         Task<User> GetUserAsync(Guid userId);
@@ -79,6 +80,13 @@ namespace ProjectManagementSystem.Services
         {
             return await _db.Users.Include(u => u.Role)
                 .AsNoTracking().FirstOrDefaultAsync(u => u.EmailAddress == userEmail);
+        }
+
+        public async Task<IEnumerable<Project>> GetProjectForTaskAsync(Guid id)
+        {
+            return await _db.Projects
+                .Where(u => u.ProjectOwnerId == id)
+                .AsNoTracking().ToListAsync();
         }
 
         public async Task<Guid> AddUserAsync(User user)

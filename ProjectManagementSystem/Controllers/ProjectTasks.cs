@@ -44,16 +44,26 @@ namespace ProjectManagementSystem.Controllers
         [Authorize(Roles = "Администратор, Пользователь, Владелец проекта")]
         public async Task<IActionResult> TaskDetail(Guid productId)
         {
-            ViewBag.Users = new SelectList(await _userService.GetUserForTaskAsync(), "Id", "Name");
+            ViewBag.Users = new SelectList(await _userService.GetUserForAddingToProjectAsync(), "Id", "Name");
             ViewBag.Priorety = new SelectList(_projectTasksService.FillingPrioreties(), "Key", "Value");
+
+            var userEmail = HttpContext.User.Identity?.Name!;
+            var user = await _userService.GetUserByLoginAsync(userEmail);
+            ViewBag.Projects = new SelectList(await _userService.GetProjectForTaskAsync(user.Id), "ProjectOwnerId", "Name");
+
             return View(await _projectTasksService.GetProjectTasksAsync(productId));
         }
 
         [Authorize(Roles = "Администратор, Владелец проекта")]
         public async Task<IActionResult> TaskCreate()
         {
-            ViewBag.Users = new SelectList(await _userService.GetUserForTaskAsync(), "Id", "Name");
+            ViewBag.Users = new SelectList(await _userService.GetUserForAddingToProjectAsync(), "Id", "Name");
             ViewBag.Priorety = new SelectList(_projectTasksService.FillingPrioreties(), "Key", "Value");
+
+            var userEmail = HttpContext.User.Identity?.Name!;
+            var user = await _userService.GetUserByLoginAsync(userEmail);
+            ViewBag.Projects = new SelectList(await _userService.GetProjectForTaskAsync(user.Id), "ProjectOwnerId", "Name");
+
             return View();
         }
 
@@ -61,15 +71,21 @@ namespace ProjectManagementSystem.Controllers
         [HttpPost]
         public async Task<IActionResult> TaskCreate(Tasks tasks)
         {
-            var productId = await _projectTasksService.AddTaskAsync(tasks);
+            string selectedValue = Request.Form["projectVal"];
+            var productId = await _projectTasksService.AddTaskAsync(tasks, selectedValue);
             return RedirectToAction("TaskDetail", new { productId });
         }
 
         [Authorize(Roles = "Администратор, Владелец проекта")]
         public async Task<IActionResult> TaskUpdate(Guid productId)
         {
-            ViewBag.Users = new SelectList(await _userService.GetUserForTaskAsync(), "Id", "Name");
+            ViewBag.Users = new SelectList(await _userService.GetUserForAddingToProjectAsync(), "Id", "Name");
             ViewBag.Priorety = new SelectList(_projectTasksService.FillingPrioreties(), "Key", "Value");
+
+            var userEmail = HttpContext.User.Identity?.Name!;
+            var user = await _userService.GetUserByLoginAsync(userEmail);
+            ViewBag.Projects = new SelectList(await _userService.GetProjectForTaskAsync(user.Id), "ProjectOwnerId", "Name");
+
             return View(await _projectTasksService.GetProjectTasksAsync(productId));
         }
 

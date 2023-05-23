@@ -31,6 +31,11 @@
                     <input type="date" asp-for="DateEnd" class="form-control" disabled="disabled" />
                     <span asp-validation-for="DateEnd" style="color: red;"></span>
                 </div>
+                <div class="form-group">
+                    <label asp-for="Attestation">Аттестация КИИ</label>
+                    <select asp-for="Attestation" class="form-control" asp-items="@ViewBag.KII"></select>
+                    <span asp-validation-for="Attestation" style="color: red;"></span>
+                </div>
                 <br />
 
                 <a asp-controller="Project" asp-action="ProjectUpdate" asp-route-productId="@ViewBag.ProjectId" class="btn btn-outline-dark">Изменить</a>

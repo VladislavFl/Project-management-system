@@ -31,6 +31,11 @@
                     <input type="date" asp-for="DateEnd" class="form-control" />
                     <span asp-validation-for="DateEnd" style="color: red;"></span>
                 </div>
+                <div class="form-group">
+                    <label asp-for="Attestation">Аттестация КИИ</label>
+                    <select asp-for="Attestation" class="form-control" asp-items="@ViewBag.KII"></select>
+                    <span asp-validation-for="Attestation" style="color: red;"></span>
+                </div>
                 <br />
                 <div class="form-group">
                     <input type="submit" value="Создать" class="btn btn-outline-dark"/>
