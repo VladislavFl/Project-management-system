@@ -30,6 +30,9 @@
                         <th scope="col">
                             <a>Владелец</a>
                         </th>
+                        <th scope="col">
+                            <a>Статус КИИ</a>
+                        </th>
                         <th class="col-1" scope="col"></th>
                     </tr>
                 </thead>
@@ -39,6 +42,26 @@
                         <tr>
                             <td>@item.Name</td>
                             <td>@item.ProjectOwnerName</td>
+                            @if (item.Status == 0)
+                            {
+                                <td>Нет аттестации</td>
+                            }
+                            @if (item.Status == 1)
+                            {
+                                <td>Ожидание</td>
+                            }
+                            @if (item.Status == 2)
+                            {
+                                <td>Отправлено</td>
+                            }
+                            @if (item.Status == 3)
+                            {
+                                <td>В обработке</td>
+                            }
+                            @if (item.Status == 4)
+                            {
+                                <td>Пройдено</td>
+                            }
                             <td><a asp-controller="Project" asp-action="ProjectDetail" asp-route-projectId="@item.Id">Подробнее</a></td>
                         </tr>
                     }

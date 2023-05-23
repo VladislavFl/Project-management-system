@@ -21,6 +21,7 @@ namespace ProjectManagementSystem.Services
         Task<Guid> EditProjectAsync(ProjectTeamViewModel projects);
         Task DeleteProjectAsync(Guid projectsId);
         Dictionary<short, string> FillingKII();
+        Dictionary<short, string> FillingKIIStatus();
     }
 
     public class ProjectService : IProjectService
@@ -61,6 +62,7 @@ namespace ProjectManagementSystem.Services
                 GitUrl = model.GitUrl,
                 DateEnd = model.DateEnd,
                 Attestation = model.Attestation,
+                Status = model.Attestation,
                 ProjectOwnerId = model.ProjectOwnerId,
                 ProjectOwnerName = model.ProjectOwnerName
             };
@@ -79,6 +81,7 @@ namespace ProjectManagementSystem.Services
             item.GitUrl = model.GitUrl;
             item.DateEnd = model.DateEnd;
             item.Attestation = model.Attestation;
+            item.Status = model.Status;
             await _db.SaveChangesAsync();
 
             return model.Id;
@@ -101,5 +104,18 @@ namespace ProjectManagementSystem.Services
             };
             return dict;
         }
+
+        public Dictionary<short, string> FillingKIIStatus()
+        {
+            Dictionary<short, string> dict = new Dictionary<short, string>
+            {
+                { 1, "Ожидание" },
+                { 2, "В обработке" },
+                { 3, "Отправлено" },
+                { 4, "Пройдено" }
+            };
+            return dict;
+        }
+
     }
 }

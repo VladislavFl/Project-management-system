@@ -19,6 +19,7 @@ namespace ProjectManagementSystem.Models
         [Required(ErrorMessage = "Поле не может быть пустым")]
         public DateTime DateEnd { get; set; }
         public int Attestation { get; set; }
+        public int Status { get; set; }
         public Guid? ProjectOwnerId { get; set; }
         public string? ProjectOwnerName { get; set; }
 

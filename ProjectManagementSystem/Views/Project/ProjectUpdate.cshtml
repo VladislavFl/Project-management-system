@@ -37,6 +37,18 @@
                     <select asp-for="Attestation" class="form-control" asp-items="@ViewBag.KII"></select>
                     <span asp-validation-for="Attestation" style="color: red;"></span>
                 </div>
+
+                @{
+                    var role = User.Claims.FirstOrDefault(x => x.Value == "Администратор");
+                    if (role != null)
+                    {
+                        <div class="form-group">
+                            <label asp-for="Status">Аттестация КИИ</label>
+                            <select asp-for="Status" class="form-control" asp-items="@ViewBag.Status"></select>
+                            <span asp-validation-for="Status" style="color: red;"></span>
+                        </div>
+                    }
+                }
                 <br />
                 <div class="form-group">
                     <input type="submit" value="Изменить" class="btn btn-outline-dark" />

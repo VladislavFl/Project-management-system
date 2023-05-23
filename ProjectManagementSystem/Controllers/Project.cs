@@ -42,6 +42,7 @@ namespace ProjectManagementSystem.Controllers
             ViewBag.Users = new SelectList(await _userService.GetUserForTaskAsync(), "Id", "Name");
             ViewBag.Team = new SelectList(await _userService.GetUserForAddingToProjectAsync(), "Id", "Name");
             ViewBag.KII = new SelectList(_projectService.FillingKII(), "Key", "Value");
+            ViewBag.Status = new SelectList(_projectService.FillingKIIStatus(), "Key", "Value");
             _currentProjectId = projectId;
             return View(await _projectService.GetProjectsAsync(projectId));
         }
@@ -52,6 +53,7 @@ namespace ProjectManagementSystem.Controllers
             ViewBag.Users = new SelectList(await _userService.GetUserForTaskAsync(), "Id", "Name");
             ViewBag.Team = new SelectList(await _userService.GetUserForAddingToProjectAsync(), "Id", "Name");
             ViewBag.KII = new SelectList(_projectService.FillingKII(), "Key", "Value");
+            ViewBag.Status = new SelectList(_projectService.FillingKIIStatus(), "Key", "Value");
             return View();
         }
 
@@ -83,6 +85,7 @@ namespace ProjectManagementSystem.Controllers
             ViewBag.Users = new SelectList(await _userService.GetUserForTaskAsync(), "Id", "Name");
             ViewBag.Team = new SelectList(await _userService.GetUserForAddingToProjectAsync(), "Id", "Name");
             ViewBag.KII = new SelectList(_projectService.FillingKII(), "Key", "Value");
+            ViewBag.Status = new SelectList(_projectService.FillingKIIStatus(), "Key", "Value");
             return View(await _projectService.GetProjectsAsync(_currentProjectId));
         }
 

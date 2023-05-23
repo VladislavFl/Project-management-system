@@ -33,17 +33,35 @@
                 </div>
                 <div class="form-group">
                     <label asp-for="Attestation">Аттестация КИИ</label>
-                    <select asp-for="Attestation" class="form-control" asp-items="@ViewBag.KII"></select>
+                    <select asp-for="Attestation" class="form-control" asp-items="@ViewBag.KII" disabled="disabled"></select>
                     <span asp-validation-for="Attestation" style="color: red;"></span>
                 </div>
+
+                @{
+                    var role = User.Claims.FirstOrDefault(x => x.Value == "Администратор");
+                    if (role != null)
+                    {
+                        <div class="form-group">
+                            <label asp-for="Status">Аттестация КИИ</label>
+                            <select asp-for="Status" class="form-control" asp-items="@ViewBag.Status" disabled="disabled"></select>
+                            <span asp-validation-for="Status" style="color: red;"></span>
+                        </div>
+                    }
+                }
                 <br />
 
-                <a asp-controller="Project" asp-action="ProjectUpdate" asp-route-productId="@ViewBag.ProjectId" class="btn btn-outline-dark">Изменить</a>
-                <input asp-for="Id" hidden="hidden" />
-                <form asp-controller="Project" asp-action="ProjectDelete" method="post">
-                    <input asp-for="Id" hidden="hidden" />
-                    <input type="submit" value="Удалить" class="btn btn-danger" />
-                </form>
+                @{
+                    if (role != null)
+                    {
+                        <a asp-controller="Project" asp-action="ProjectUpdate" asp-route-productId="@ViewBag.ProjectId" class="btn btn-outline-dark">Изменить</a>
+                        <input asp-for="Id" hidden="hidden" />
+                        <form asp-controller="Project" asp-action="ProjectDelete" method="post">
+                            <input asp-for="Id" hidden="hidden" />
+                            <input type="submit" value="Удалить" class="btn btn-danger" />
+                        </form>
+                    }
+                }
+
                 <a asp-controller="Project" asp-action="Index">Назад к списку</a>
             </div>
         </div>
