@@ -37,11 +37,15 @@
                     <span asp-validation-for="Attestation" style="color: red;"></span>
                 </div>
                 <br />
-                <div class="form-group">
-                    <input type="submit" value="Создать" class="btn btn-outline-dark"/>
+                <div class="form-group text-center">
+                    <input type="submit" value="Создать" class="btn btn-dark"/>
                 </div>
             </form>
-            <a asp-controller="Project" asp-action="Index">Назад к списку</a>
+            <div style="display: flex; justify-content: center;">
+                <form style="margin: 5px;" asp-controller="Project" asp-action="Index" method="post">
+                    <input type="submit" value="Назад к списку" class="btn btn-outline-dark mr-2" />
+                </form>
+            </div>
         </div>
         <div class="col-md-4"></div>
     </div>

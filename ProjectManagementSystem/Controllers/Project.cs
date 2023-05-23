@@ -45,6 +45,7 @@ namespace ProjectManagementSystem.Controllers
             ViewBag.KII = new SelectList(_projectService.FillingKII(), "Key", "Value");
             ViewBag.Status = new SelectList(_projectService.FillingKIIStatus(), "Key", "Value");
             _currentProjectId = projectId;
+            ViewBag.ProjectTeam = await _userService.GetProjectTeam(projectId);
             return View(await _projectService.GetProjectsAsync(projectId));
         }
 

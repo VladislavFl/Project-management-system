@@ -27,6 +27,7 @@ namespace ProjectManagementSystem.Services
         Task<bool> CheckUserByLoginAsync(string login);
         Task<bool> CheckUserByLoginAndPasswordAsync(string login, string password);
         Task DeleteUserAsync(Guid userId);
+        Task<List<User>> GetProjectTeam(Guid projectId);
     }
 
     public class UserService : IUserService
@@ -160,6 +161,11 @@ namespace ProjectManagementSystem.Services
             if (user != null)
                 _db.Users.Remove(user);
             await _db.SaveChangesAsync();
+        }
+
+        public async Task<List<User>> GetProjectTeam(Guid projectId)
+        {
+            return await _db.Users.Where(x => x.ProjectId == projectId).ToListAsync();
         }
     }
 }
