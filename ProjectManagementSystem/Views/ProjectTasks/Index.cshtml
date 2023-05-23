@@ -17,7 +17,7 @@
 
 <div class="container">
     <div class="row">
-        <div class="text-right col-sm">
+        <div style="display: flex; justify-content: left;">
             @{
                 var role = User.Claims.FirstOrDefault(x => x.Value == "Пользователь");
                 if (role == null)
@@ -25,16 +25,29 @@
                     <a asp-controller="ProjectTasks" asp-action="TaskCreate" class="btn btn-dark">Создать задачу</a>
                 }
             }
+
+            <div style="margin-left: 25px;">
+                <span style="display: inline-block; width: 20px; height: 20px; border-radius: 50%; vertical-align:bottom; background-color: #fa5050;"></span>
+                <span> - Критически важно</span>
+            </div>
+            <div style="margin-left: 25px;">
+                <span style="display: inline-block; width: 20px; height: 20px; border-radius: 50%; vertical-align:bottom; background-color: #fad850;"></span>
+                <span> - Средний уровень важности</span>
+            </div>
+            <div style="margin-left: 25px;">
+                <span style="display: inline-block; width: 20px; height: 20px; border-radius: 50%; vertical-align:bottom; background-color: #50fa7d;"></span>
+                <span> - Низкий уровень важности</span>
+            </div>
         </div>
     </div>
-    <br />
 </div>
+<br />
 
 
 <div>
     <div class="row w-100 m-0">
-        <div class="col-md-12 m-0 p-0">
-
+        <div class="table-responsive">
+            <h1 class="display-6 text-center">Список задач</h1>
             <table class="table table-striped border">
                 <thead>
                     <tr>
@@ -57,24 +70,34 @@
                     @foreach (var item in Model)
                     {
                         string val = string.Empty;
+                        string priorety = string.Empty;
+
                         if (item.Priorety == 1)
                         {
                             val = "high-priority";
+                            priorety = "Критически важно";
                         }
                         else if (item.Priorety == 2)
                         {
                             val = "medium-priority";
+                            priorety = "Средний уровень важности";
                         }
                         else if (item.Priorety == 3)
                         {
                             val = "low-priority";
+                            priorety = "Низкий уровень важности";
                         }
                         <tr class=@val>
                             <td>@item.Name</td>
-                            <td>@item.Priorety</td>
+                            <td>@priorety</td>
                             <td>@item.Description</td>
                             <td>@item.User.Name</td>
-                            <td><a asp-controller="ProjectTasks" asp-action="TaskDetail" asp-route-productId="@item.Id">Подробнее</a></td>
+                            <td>
+                                <form method="get" asp-controller="ProjectTasks" asp-action="TaskDetail">
+                                    <input type="hidden" name="taskId" value="@item.Id">
+                                    <button class="btn btn-outline-dark" type="submit">Подробнее</button>
+                                </form>
+                            </td>
                         </tr>
                     }
                 </tbody>

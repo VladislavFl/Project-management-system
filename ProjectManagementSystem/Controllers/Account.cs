@@ -59,7 +59,7 @@ namespace ProjectManagementSystem.Controllers
             {
                 await Authenticate(user);
 
-                return RedirectToAction("Index", user.Role.Name == "Администратор" ? "Admin" : "Home");
+                return RedirectToAction("Index", user.Role.Name == "Администратор" ? "Admin" : "ProjectTasks");
             }
             ModelState.AddModelError("", "Неверный логин и (или) пароль");
             return View(model);

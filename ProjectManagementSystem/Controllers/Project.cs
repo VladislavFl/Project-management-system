@@ -31,6 +31,7 @@ namespace ProjectManagementSystem.Controllers
             else
             {
                 var userEmail = HttpContext.User.Identity?.Name!;
+                var userId = await _userService.GetUserAsync(userEmail);
                 var projects = await _projectService.GetAllProjectsByUserAsync(userEmail);
                 return View(projects);
             }
@@ -76,7 +77,7 @@ namespace ProjectManagementSystem.Controllers
                     await _userService.EditUserForProjectAsync(Guid.Parse(item), projectId);
                 }
             }
-            return RedirectToAction("ProjectDetail", new { projectId });
+            return RedirectToAction("Index", new { projectId });
         }
 
         [Authorize(Roles = "Администратор, Владелец проекта")]

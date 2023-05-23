@@ -19,8 +19,8 @@
 
 <div>
     <div class="row w-100 m-0">
-        <div class="col-md-12 m-0 p-0">
-
+        <div class="table-responsive">
+            <h1 class="display-6 text-center">Список проектов</h1>
             <table class="table table-striped border">
                 <thead>
                     <tr>
@@ -29,6 +29,9 @@
                         </th>
                         <th scope="col">
                             <a>Владелец</a>
+                        </th>
+                        <th scope="col">
+                            <a>Репозиторий GitHub</a>
                         </th>
                         <th scope="col">
                             <a>Статус КИИ</a>
@@ -42,6 +45,7 @@
                         <tr>
                             <td>@item.Name</td>
                             <td>@item.ProjectOwnerName</td>
+                            <td><a href="@item.GitUrl">@item.GitUrl</a></td>
                             @if (item.Status == 0)
                             {
                                 <td>Нет аттестации</td>
@@ -62,7 +66,12 @@
                             {
                                 <td>Пройдено</td>
                             }
-                            <td><a asp-controller="Project" asp-action="ProjectDetail" asp-route-projectId="@item.Id">Подробнее</a></td>
+                            <td>
+                                <form method="get" asp-controller="Project" asp-action="ProjectDetail" asp-route-projectId="@item.Id">
+                                    <input type="hidden" name="projectId" value="@item.Id">
+                                    <button class="btn btn-outline-dark" type="submit">Подробнее</button>
+                                </form>
+                            </td>
                         </tr>
                     }
                 </tbody>

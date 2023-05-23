@@ -2,7 +2,8 @@
 
 
 <div class="row w-100 m-0">
-    <div class="col-md-12 m-0 p-0">
+    <div class="table-responsive">
+        <h1 class="display-6 text-center">Список пользователей</h1>
         <table class="table table-striped border">
             <thead>
                 <tr>
@@ -24,7 +25,12 @@
                         <td>@user.Name</td>
                         <td>@user.EmailAddress</td>
                         <td>@user.Role.Name</td>
-                        <td><a asp-controller="Admin" asp-action="UpdateUser" asp-route-userId="@user.Id">Изменить</a></td>
+                        <td>
+                            <form method="get" asp-controller="Admin" asp-action="UpdateUser">
+                                <input type="hidden" name="userId" value="@user.Id">
+                                <button class="btn btn-outline-dark" type="submit">Изменить</button>
+                            </form>
+                        </td>
                     </tr>
                 }
             </tbody>

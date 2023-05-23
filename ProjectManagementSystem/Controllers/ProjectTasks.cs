@@ -1,15 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ProjectManagementSystem.Services;
-using System.Threading.Tasks;
 using ProjectManagementSystem.Models;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using System;
-using System.Linq;
 using Microsoft.AspNetCore.Authorization;
-using System.IO;
-using System.Security.Claims;
-using System.Security.Principal;
-using System.Collections;
 
 namespace ProjectManagementSystem.Controllers
 {
@@ -17,6 +10,7 @@ namespace ProjectManagementSystem.Controllers
     {
         private readonly IProjectTasksService _projectTasksService;
         private readonly IUserService _userService;
+        private static Guid _currentTaskId;
 
         public ProjectTasks(IProjectTasksService productService, IUserService userService)
         {
@@ -42,7 +36,7 @@ namespace ProjectManagementSystem.Controllers
         }
 
         [Authorize(Roles = "Администратор, Пользователь, Владелец проекта")]
-        public async Task<IActionResult> TaskDetail(Guid productId)
+        public async Task<IActionResult> TaskDetail(Guid taskId)
         {
             ViewBag.Users = new SelectList(await _userService.GetUserForAddingToProjectAsync(), "Id", "Name");
             ViewBag.Priorety = new SelectList(_projectTasksService.FillingPrioreties(), "Key", "Value");
@@ -51,7 +45,9 @@ namespace ProjectManagementSystem.Controllers
             var user = await _userService.GetUserByLoginAsync(userEmail);
             ViewBag.Projects = new SelectList(await _userService.GetProjectForTaskAsync(user.Id), "ProjectOwnerId", "Name");
 
-            return View(await _projectTasksService.GetProjectTasksAsync(productId));
+            _currentTaskId = taskId;
+
+            return View(await _projectTasksService.GetProjectTasksAsync(taskId));
         }
 
         [Authorize(Roles = "Администратор, Владелец проекта")]
@@ -73,11 +69,11 @@ namespace ProjectManagementSystem.Controllers
         {
             string selectedValue = Request.Form["projectVal"];
             var productId = await _projectTasksService.AddTaskAsync(tasks, selectedValue);
-            return RedirectToAction("TaskDetail", new { productId });
+            return RedirectToAction("Index", new { productId });
         }
 
         [Authorize(Roles = "Администратор, Владелец проекта")]
-        public async Task<IActionResult> TaskUpdate(Guid productId)
+        public async Task<IActionResult> TaskUpdate()
         {
             ViewBag.Users = new SelectList(await _userService.GetUserForAddingToProjectAsync(), "Id", "Name");
             ViewBag.Priorety = new SelectList(_projectTasksService.FillingPrioreties(), "Key", "Value");
@@ -86,18 +82,18 @@ namespace ProjectManagementSystem.Controllers
             var user = await _userService.GetUserByLoginAsync(userEmail);
             ViewBag.Projects = new SelectList(await _userService.GetProjectForTaskAsync(user.Id), "ProjectOwnerId", "Name");
 
-            return View(await _projectTasksService.GetProjectTasksAsync(productId));
+            return View(await _projectTasksService.GetProjectTasksAsync(_currentTaskId));
         }
 
         [Authorize(Roles = "Администратор, Владелец проекта")]
         [HttpPost]
         public async Task<IActionResult> TaskUpdate(Tasks tasks)
         {
-            var productId = await _projectTasksService.EditTaskAsync(tasks);
-            return RedirectToAction("TaskDetail", new { productId });
+            await _projectTasksService.EditTaskAsync(tasks);
+            return RedirectToAction("TaskDetail", new { _currentTaskId });
         }
 
-        [Authorize(Roles = "Администратор, Владелец проекта")]
+        [Authorize(Roles = "Администратор, Пользователь, Владелец проекта")]
         [HttpPost]
         public async Task<IActionResult> TaskDelete(Tasks tasks)
         {
