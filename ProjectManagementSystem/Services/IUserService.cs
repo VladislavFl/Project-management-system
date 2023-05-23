@@ -19,15 +19,13 @@ namespace ProjectManagementSystem.Services
         Task<User> GetUserAsync(Guid userId);
         Task<User> GetUserAsync(string userEmail);
         Task<Guid> AddUserAsync(User user);
-        Task<Guid> AddUserFromFileAsync(User user);
         Task AddUserAsync(RegisterViewModel model);
         Task<Guid> EditUserAsync(User user);
-        Task<Guid> EditUserForProjectAsync(Guid id);
+        Task<Guid> EditUserForProjectAsync(Guid id, Guid projectId);
         Task<IEnumerable<Role>> GetAllRoleAsync();
         Task<bool> CheckUserByLoginAsync(string login);
         Task<bool> CheckUserByLoginAndPasswordAsync(string login, string password);
         Task DeleteUserAsync(Guid userId);
-        Task ClearDataBase();
     }
 
     public class UserService : IUserService
@@ -91,14 +89,6 @@ namespace ProjectManagementSystem.Services
             return user.Id;
         }
 
-        public async Task<Guid> AddUserFromFileAsync(User user)
-        {
-            await _db.Users.AddAsync(user);
-            await _db.SaveChangesAsync();
-
-            return user.Id;
-        }
-
         public async Task AddUserAsync(RegisterViewModel model)
         {
             var user = new User()
@@ -126,9 +116,13 @@ namespace ProjectManagementSystem.Services
             return user.Id;
         }
 
-        public async Task<Guid> EditUserForProjectAsync(Guid id)
+        public async Task<Guid> EditUserForProjectAsync(Guid userId, Guid projectId)
         {
-            var user = _db.Users.Where(x => x.Id == id).FirstOrDefault();
+            var user = _db.Users.Where(x => x.Id == userId).FirstOrDefault();
+            var project = _db.Projects.Where(x => x.Id == projectId).FirstOrDefault();
+            user.Project = project;
+            user.ProjectId = userId;
+
             _db.Users.Update(user);
             await _db.SaveChangesAsync();
 
@@ -158,12 +152,6 @@ namespace ProjectManagementSystem.Services
             if (user != null)
                 _db.Users.Remove(user);
             await _db.SaveChangesAsync();
-        }
-
-        public async Task ClearDataBase()
-        {
-            /*_db.Users.RemoveRange(_db.Users.Where(u => u.Id != Guid.Parse("166F4B58-F165-4A72-AB5B-B2406C80D751")));
-            await _db.SaveChangesAsync();*/
         }
     }
 }

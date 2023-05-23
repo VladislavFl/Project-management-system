@@ -1,12 +1,11 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
+using System.ComponentModel.DataAnnotations;
 
-namespace ProjectManagementSystem.Models
+namespace ProjectManagementSystem.ViewModels.Project
 {
-    public class Project
+    public class ProjectTeamViewModel
     {
         public Guid Id { get; set; }
-
         [Required(ErrorMessage = "Поле не может быть пустым")]
         public string Name { get; set; }
 
@@ -19,10 +18,9 @@ namespace ProjectManagementSystem.Models
         [Required(ErrorMessage = "Поле не может быть пустым")]
         public DateTime DateEnd { get; set; }
         public int Attestation { get; set; }
-        public Guid? ProjectOwnerId { get; set; }
-        public string? ProjectOwnerName { get; set; }
 
         [Required(ErrorMessage = "Поле не может быть пустым")]
-        public User? User { get; set; }
+        public Guid ProjectOwnerId { get; set; }
+        public string? ProjectOwnerName { get; set; }
     }
 }

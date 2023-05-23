@@ -1,32 +1,6 @@
 ﻿@model ProjectManagementSystem.ViewModels.Admin.HomeViewModel
 
 
-<div class="row">
-
-    <div class="text-right col-sm">
-        <a class="btn btn-danger text-light" data-toggle="modal" data-target="#deletionModal">Удалить все данные</a>
-    </div>
-</div>
-
-<div class="modal fade" id="deletionModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content justify-content-between" style="height: 200px; background-color: #6b6b6b; border-radius: 0.5rem;">
-
-            <div class="text-center text-white font-weight-bold mt-3" style="font-size: 22px">
-                Удалить все данные во всех таблицах?
-            </div>
-            <div class="modal-footer justify-content-between" style="border-top:0px ">
-                <button type="button" class="btn btn-light pl-5 pr-5" data-dismiss="modal">Отмена</button>
-
-                <form method="get" asp-action="ClearData" asp-controller="Admin">
-                    <input class="btn btn-danger pl-5 pr-5" type="submit" value="Удалить" />
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
-<br />
-
 <div class="row w-100 m-0">
     <div class="col-md-12 m-0 p-0">
         <table class="table table-striped border">

@@ -3,6 +3,7 @@ using ProjectManagementSystem.Services;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Authorization;
 using ProjectManagementSystem.Models;
+using ProjectManagementSystem.ViewModels.Project;
 
 namespace ProjectManagementSystem.Controllers
 {
@@ -10,6 +11,7 @@ namespace ProjectManagementSystem.Controllers
     {
         private readonly IProjectService _projectService;
         private readonly IUserService _userService;
+        private Guid _currentProjectId;
 
         public Project(IProjectService projectService, IUserService userService)
         {
@@ -23,14 +25,14 @@ namespace ProjectManagementSystem.Controllers
             var role = User.Claims.FirstOrDefault(x => x.Value == "Пользователь");
             if (role == null)
             {
-                var tasks = await _projectService.GetAllProjectsAsync();
-                return View(tasks);
+                var projects = await _projectService.GetAllProjectsAsync();
+                return View(projects);
             }
             else
             {
                 var userEmail = HttpContext.User.Identity?.Name!;
-                var tasks = await _projectService.GetAllProjectsByUserAsync(userEmail);
-                return View(tasks);
+                var projects = await _projectService.GetAllProjectsByUserAsync(userEmail);
+                return View(projects);
             }
         }
 
@@ -38,6 +40,8 @@ namespace ProjectManagementSystem.Controllers
         public async Task<IActionResult> ProjectDetail(Guid projectId)
         {
             ViewBag.Users = new SelectList(await _userService.GetUserForTaskAsync(), "Id", "Name");
+            ViewBag.Team = new SelectList(await _userService.GetUserForAddingToProjectAsync(), "Id", "Name");
+            _currentProjectId = projectId;
             return View(await _projectService.GetProjectsAsync(projectId));
         }
 
@@ -51,10 +55,23 @@ namespace ProjectManagementSystem.Controllers
 
         [Authorize(Roles = "Администратор, Владелец проекта")]
         [HttpPost]
-        public async Task<IActionResult> ProjectCreate(Models.Project project)
+        public async Task<IActionResult> ProjectCreate(ProjectTeamViewModel model)
         {
-            var projectId = await _projectService.AddProjectAsync(project);
-            var user = await _userService.EditUserForProjectAsync(project.User.Id);
+            string[] selectedValues = Request.Form["teamList"];
+            var users = await _userService.GetAllUsersAsync();
+            var userEmail = HttpContext.User.Identity?.Name!;
+            model.ProjectOwnerId = users.FirstOrDefault(x => x.EmailAddress == userEmail).Id;
+            model.ProjectOwnerName = users.FirstOrDefault(x => x.EmailAddress == userEmail).Name;
+            var projectId = await _projectService.AddProjectAsync(model);
+            
+            // заполнение projectId у выбранных в выпадающем списке пользователей
+            if (selectedValues != null)
+            {
+                foreach (var item in selectedValues)
+                {
+                    await _userService.EditUserForProjectAsync(Guid.Parse(item), projectId);
+                }
+            }
             return RedirectToAction("ProjectDetail", new { projectId });
         }
 
@@ -62,14 +79,15 @@ namespace ProjectManagementSystem.Controllers
         public async Task<IActionResult> ProjectUpdate(Guid projectId)
         {
             ViewBag.Users = new SelectList(await _userService.GetUserForTaskAsync(), "Id", "Name");
-            return View(await _projectService.GetProjectsAsync(projectId));
+            ViewBag.Team = new SelectList(await _userService.GetUserForAddingToProjectAsync(), "Id", "Name");
+            return View(await _projectService.GetProjectsAsync(_currentProjectId));
         }
 
         [Authorize(Roles = "Администратор, Владелец проекта")]
         [HttpPost]
-        public async Task<IActionResult> ProjectUpdate(Models.Project project)
+        public async Task<IActionResult> ProjectUpdate(ProjectTeamViewModel model)
         {
-            var projectId = await _projectService.EditProjectAsync(project);
+            var projectId = await _projectService.EditProjectAsync(model);
             return RedirectToAction("ProjectDetail", new { projectId });
         }
 

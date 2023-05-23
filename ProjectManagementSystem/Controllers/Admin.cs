@@ -58,7 +58,6 @@ namespace ProjectManagementSystem.Controllers
         [HttpGet]
         public async Task<IActionResult> ClearData()
         {
-            await _userService.ClearDataBase();
             await HttpContext.SignOutAsync();
             return RedirectToAction("Login", "Account");
         }

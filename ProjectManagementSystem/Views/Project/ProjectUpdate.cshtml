@@ -1,10 +1,10 @@
-﻿@model ProjectManagementSystem.Models.Tasks
+﻿@model ProjectManagementSystem.ViewModels.Project.ProjectTeamViewModel
 
 <div class="container">
     <div class="row">
         <div class="col-md-4"></div>
         <div class="col-md-4">
-            <form asp-action="TaskUpdate" asp-controller="ProjectTasks" method="post">
+            <form asp-action="ProjectUpdate" asp-controller="Project" method="post">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <input asp-for="Id" hidden="hidden" />
                 <div class="form-group">
@@ -13,26 +13,31 @@
                     <span asp-validation-for="Name" style="color: red;"></span>
                 </div>
                 <div class="form-group">
-                    <label asp-for="Priorety">Приоритет</label>
-                    <select asp-for="Priorety" class="form-control" asp-items="@ViewBag.Priorety"></select>
-                    <span asp-validation-for="Priorety" style="color: red;"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="Description">Техническое задание</label>
+                    <label asp-for="Description">Описание проекта</label>
                     <textarea asp-for="Description" class="form-control"></textarea>
                     <span asp-validation-for="Description" style="color: red;"></span>
                 </div>
                 <div>
-                    <label asp-for="UserId">Выбрать пользователя</label>
-                    <select asp-for="UserId" class="form-control" asp-items="@ViewBag.Users"></select>
-                    <span asp-validation-for="UserId" style="color: red;"></span>
+                    <label>Выбрать участника</label>
+                    <select name="teamList" class="form-select" multiple asp-items="@ViewBag.Team"></select>
+                    <span style="color: red;"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="GitUrl">Репозиторий GitHub</label>
+                    <input asp-for="GitUrl" class="form-control" />
+                    <span asp-validation-for="GitUrl" style="color: red;"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="DateEnd">Дата завершения проекта</label>
+                    <input type="date" asp-for="DateEnd" class="form-control" />
+                    <span asp-validation-for="DateEnd" style="color: red;"></span>
                 </div>
                 <br />
                 <div class="form-group">
                     <input type="submit" value="Изменить" class="btn btn-outline-dark" />
                 </div>
             </form>
-            <a asp-controller="ProjectTasks" asp-action="Index">Назад к списку</a>
+            <a asp-controller="Project" asp-action="Index">Назад к списку</a>
         </div>
         <div class="col-md-4"></div>
     </div>

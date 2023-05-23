@@ -41,13 +41,6 @@ namespace ProjectManagementSystem.Controllers
             }
         }
 
-        /*[Authorize(Roles = "Администратор, Пользователь, Владелец проекта")]
-        [HttpPost]
-        public async Task<IActionResult> Index2(Guid userId)
-        {
-            return View(await _projectTasksService.GetAllTaskByUserAsync(userId));
-        }*/
-
         [Authorize(Roles = "Администратор, Пользователь, Владелец проекта")]
         public async Task<IActionResult> TaskDetail(Guid productId)
         {
@@ -68,14 +61,6 @@ namespace ProjectManagementSystem.Controllers
         [HttpPost]
         public async Task<IActionResult> TaskCreate(Tasks tasks)
         {
-            /*var validateSerialNumber = (await _projectTasksService.GetAllProductsAsync()).FirstOrDefault(x => x.SerialNumber == tasks.SerialNumber);
-            if (validateSerialNumber != null)
-            {
-                ModelState.AddModelError("", "Такой серийный номер уже существует");
-                ViewBag.Users = new SelectList(await _userService.GetUserForProductionAsync(), "Id", "Login");
-                return View(tasks);
-            }*/
-
             var productId = await _projectTasksService.AddTaskAsync(tasks);
             return RedirectToAction("TaskDetail", new { productId });
         }

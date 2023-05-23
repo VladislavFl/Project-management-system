@@ -1,4 +1,7 @@
-﻿namespace ProjectManagementSystem.Models
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace ProjectManagementSystem.Models
 {
     public class User
     {
@@ -8,5 +11,7 @@
         public string Password { get; set; }
         public Guid? RoleId { get; set; }
         public Role Role { get; set; }
+        public Guid? ProjectId { get; set; }
+        public Project? Project { get; set; }
     }
 }

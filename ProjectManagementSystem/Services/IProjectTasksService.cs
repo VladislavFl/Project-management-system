@@ -11,8 +11,6 @@ namespace ProjectManagementSystem.Services
     public interface IProjectTasksService
     {
         Task<IEnumerable<Tasks>> GetAllTasksAsync();
-        //Task<IEnumerable<Tasks>> GetAllProductForRepair();
-        //Task<IEnumerable<Tasks>> GetAllProductsForShipmentAsync();
         Task<IEnumerable<Tasks>> GetAllTaskByUserAsync(string email);
         Task<Tasks> GetProjectTasksAsync(Guid tasksId);
         Task<Guid> AddTaskAsync(Tasks tasks);
@@ -35,20 +33,6 @@ namespace ProjectManagementSystem.Services
             return await _db.Tasks.Include(p => p.User)
                 .AsNoTracking().ToListAsync();
         }
-
-        /*public async Task<IEnumerable<Tasks>> GetAllProductForRepair()
-        {
-            return await _db.Shipments.Select(s => s.Product)
-                .OrderBy(p => p.CreatedDate)
-                .AsNoTracking().ToListAsync();
-        }
-
-        public async Task<IEnumerable<Tasks>> GetAllProductsForShipmentAsync()
-        {
-            var result = await _db.Tasks.Where(p => _db.Shipments.All(i => i.ProductId != p.Id))
-                .AsNoTracking().ToListAsync();
-            return result;
-        }*/
 
         public async Task<IEnumerable<Tasks>> GetAllTaskByUserAsync(string email)
         {
@@ -73,7 +57,6 @@ namespace ProjectManagementSystem.Services
 
         public async Task<Guid> EditTaskAsync(Tasks tasks)
         {
-            //_db.Products.Update(product);
             var item = await _db.Tasks.FirstOrDefaultAsync(s => s.Id == tasks.Id);
             item.Name = tasks.Name;
             item.Priorety = tasks.Priorety;

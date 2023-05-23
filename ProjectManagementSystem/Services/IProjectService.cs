@@ -8,6 +8,7 @@ using ProjectManagementSystem.Models;
 using System.Xml.Linq;
 using ProjectManagementSystem.Controllers;
 using Project = ProjectManagementSystem.Models.Project;
+using ProjectManagementSystem.ViewModels.Project;
 
 namespace ProjectManagementSystem.Services
 {
@@ -16,8 +17,8 @@ namespace ProjectManagementSystem.Services
         Task<IEnumerable<Project>> GetAllProjectsAsync();
         Task<IEnumerable<Project>> GetAllProjectsByUserAsync(string email);
         Task<Project> GetProjectsAsync(Guid projectsId);
-        Task<Guid> AddProjectAsync(Project projects);
-        Task<Guid> EditProjectAsync(Project projects);
+        Task<Guid> AddProjectAsync(ProjectTeamViewModel projects);
+        Task<Guid> EditProjectAsync(ProjectTeamViewModel projects);
         Task DeleteProjectAsync(Guid projectsId);
     }
 
@@ -45,30 +46,42 @@ namespace ProjectManagementSystem.Services
 
         public async Task<Project> GetProjectsAsync(Guid projectsId)
         {
-            return await _db.Projects.Include(p => p.User).AsNoTracking()
+            var project =  await _db.Projects.Include(p => p.User).AsNoTracking()
                 .FirstOrDefaultAsync(p => p.Id == projectsId);
+            return project;
         }
 
-        public async Task<Guid> AddProjectAsync(Project projects)
+        public async Task<Guid> AddProjectAsync(ProjectTeamViewModel model)
         {
-            await _db.Projects.AddAsync(projects);
+            var project = new Project()
+            {
+                Id = Guid.NewGuid(),
+                Name = model.Name,
+                Description = model.Description,
+                GitUrl = model.GitUrl,
+                DateEnd = model.DateEnd,
+                Attestation = model.Attestation,
+                ProjectOwnerId = model.ProjectOwnerId,
+                ProjectOwnerName = model.ProjectOwnerName
+            };
+
+            await _db.Projects.AddAsync(project);
             await _db.SaveChangesAsync();
 
-            return projects.Id;
+            return project.Id;
         }
 
-        public async Task<Guid> EditProjectAsync(Project projects)
+        public async Task<Guid> EditProjectAsync(ProjectTeamViewModel model)
         {
-            var item = await _db.Projects.FirstOrDefaultAsync(s => s.Id == projects.Id);
-            item.Name = projects.Name;
-            item.Users = projects.Users;
-            item.Description = projects.Description;
-            item.GitUrl = projects.GitUrl;
-            item.DateEnd = projects.DateEnd;
-            item.UserId = projects.UserId;
+            var item = await _db.Projects.FirstOrDefaultAsync(s => s.Id == model.Id);
+            item.Name = model.Name;
+            item.Description = model.Description;
+            item.GitUrl = model.GitUrl;
+            item.DateEnd = model.DateEnd;
+            item.Attestation = model.Attestation;
             await _db.SaveChangesAsync();
 
-            return projects.Id;
+            return model.Id;
         }
 
         public async Task DeleteProjectAsync(Guid projectId)
