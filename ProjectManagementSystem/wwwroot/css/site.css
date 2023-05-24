@@ -66,10 +66,7 @@ html {
 
 body {
     /* Margin bottom by footer height */
-    margin-bottom: 0;
-    background-image: url('/images/bg_photo.jpg');
-    background-size: cover;
-    background-position: center;
+    margin: 0px;
 }
 
 .footer {
