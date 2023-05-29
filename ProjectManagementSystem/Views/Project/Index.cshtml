@@ -1,22 +1,6 @@
 ﻿@model System.Collections.Generic.IEnumerable<ProjectManagementSystem.Models.Project>
 
 
-<div class="container">
-    <div class="row">
-        <div class="text-right col-sm">
-            @{
-                var role = User.Claims.FirstOrDefault(x => x.Value == "Пользователь");
-                if (role == null)
-                {
-                    <a asp-controller="Project" asp-action="ProjectCreate" class="btn btn-dark">Создать проект</a>
-                }
-            }
-        </div>
-    </div>
-    <br />
-</div>
-
-
 <div>
     <div class="row w-100 m-0">
         <div class="table-responsive">
@@ -76,6 +60,32 @@
                     }
                 </tbody>
             </table>
+        </div>
+    </div>
+    </br>
+    </br>
+    </br>
+    </br>
+</div>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col">
+            <div class="panel panel-default fixed-bottom bg-light">
+                <div class="container">
+                    <div class="row">
+                        <div class="col d-flex justify-content-end align-items-center" style="margin-top: 3px; margin-bottom: 3px;">
+                            @{
+                                var role = User.Claims.FirstOrDefault(x => x.Value == "Пользователь");
+                                if (role == null)
+                                {
+                                    <a asp-controller="Project" asp-action="ProjectCreate" class="btn btn-dark">Создать проект</a>
+                                }
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
