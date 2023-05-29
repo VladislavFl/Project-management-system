@@ -7,7 +7,7 @@
     </header>
 
     <main>
-        <div class="row g-3 border border-dark rounded">
+        <div class="row g-3 border border-dark rounded" style="word-wrap: break-word;">
             <h2 class="text-body">Описание проекта</h2>
             <p class="fs-5">@Model.Description</p>
         </div>
@@ -34,7 +34,7 @@
                 }
                 @if (@Model.Status == 1)
                 {
-                    <div class="border border-dark rounded">
+                    <div>
                         <p><strong>Статус:</strong> Ожидание</p>
                         <span style="display: inline-block; width: 20px; height: 20px; border-radius: 50%; vertical-align:bottom; background-color: #8f8f8f"></span>
                         <br></br>
@@ -42,7 +42,7 @@
                 }
                 @if (@Model.Status == 2)
                 {
-                    <div class="border border-dark rounded">
+                    <div>
                         <p><strong>Статус:</strong> Отправлено</p>
                         <span style="display: inline-block; width: 20px; height: 20px; border-radius: 50%; vertical-align:bottom; background-color: #5485e8;"></span>
                         <br></br>
@@ -58,7 +58,7 @@
                 }
                 @if (@Model.Status == 4)
                 {
-                    <div class="border border-dark rounded">
+                    <div>
                         <p><strong>Статус:</strong> Пройдено</p>
                         <span style="display: inline-block; width: 20px; height: 20px; border-radius: 50%; vertical-align:bottom; background-color: #50fa7d;"></span>
                         <br></br>

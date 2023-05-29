@@ -7,6 +7,7 @@ namespace ProjectManagementSystem.ViewModels.Project
     {
         public Guid Id { get; set; }
         [Required(ErrorMessage = "Поле не может быть пустым")]
+        [MaxLength(150, ErrorMessage = "Максимальная длина составляет 150 символов")]
         public string Name { get; set; }
 
         [Required(ErrorMessage = "Поле не может быть пустым")]
