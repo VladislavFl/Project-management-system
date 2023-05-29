@@ -24,6 +24,18 @@
                 string val = string.Empty;
                 string priorety = string.Empty;
 
+                var descrLength = @item.Description.Length;
+                string descr = string.Empty;
+                if (descrLength > 150)
+                {
+                    descr = @item.Description.Substring(0, 150);
+                    descr += "...";
+                }
+                else
+                {
+                    descr = item.Description;
+                }
+
                 if (item.Priorety == 1)
                 {
                     val = "high-priority";
@@ -39,46 +51,65 @@
                     val = "low-priority";
                     priorety = "Низкий уровень важности";
                 }
-                <div class="col-sm-4 mb-3">
-                    <div class="card" style="background: @val;">
+                <div class="col-sm-4 mb-3 card-group">
+                    <div class="card @val">
                         <div class="card-body">
                             <h5 class="card-title">@item.Name</h5>
-                            <p class="card-text">@item.Description</p>
-                            <a href="#" class="btn btn-primary">Выполнить</a>
+                            <p class="card-text">@descr</p>
+
+                            <div style="display: flex; justify-content: left;">
+                                <form method="post" action="@Url.Action("TaskDelete", "ProjectTasks", new { taskId = item.Id })">
+                                    <button type="submit" class="btn btn-dark">Выполнить</button>
+                                </form>
+                                <form style="margin-left: 5px;" method="get" asp-controller="ProjectTasks" asp-action="TaskDetail">
+                                    <input type="hidden" name="taskId" value="@item.Id">
+                                    <button class="btn btn-outline-dark" type="submit">Подробнее</button>
+                                </form>
+                            </div>
                         </div>
                     </div>
                 </div>
             }
         </div>
     </div>
+    </br>
+    </br>
+    </br>
+    </br>
 </div>
 
-<footer class="footer sticky-footer">
-    <div class="container">
-        <div class="row">
-            <div class="col d-flex justify-content-end align-items-center">
+<div class="container-fluid">
+    <div class="row">
+        <div class="col">
+            <div class="panel panel-default fixed-bottom bg-light">
+                <div class="container">
+                    <div class="row">
+                        <div class="col d-flex justify-content-end align-items-center" style="margin-top: 3px; margin-bottom: 3px;">
 
-                <div style="margin-right: 25px;">
-                    <span style="display: inline-block; width: 20px; height: 20px; border-radius: 50%; vertical-align:central; background-color: #fa5050;"></span>
-                    <span> - Критически важно</span>
-                </div>
-                <div style="margin-right: 25px;">
-                    <span style="display: inline-block; width: 20px; height: 20px; border-radius: 50%; vertical-align:central; background-color: #fad850;"></span>
-                    <span> - Средний уровень важности</span>
-                </div>
-                <div style="margin-right: 25px;">
-                    <span style="display: inline-block; width: 20px; height: 20px; border-radius: 50%; vertical-align:central; background-color: #50fa7d;"></span>
-                    <span> - Низкий уровень важности</span>
-                </div>
+                            <div style="margin-right: 25px;">
+                                <span style="display: inline-block; width: 20px; height: 20px; border-radius: 50%; vertical-align:central; background-color: #fa5050;"></span>
+                                <span> - Критически важно</span>
+                            </div>
+                            <div style="margin-right: 25px;">
+                                <span style="display: inline-block; width: 20px; height: 20px; border-radius: 50%; vertical-align:central; background-color: #fad850;"></span>
+                                <span> - Средний уровень важности</span>
+                            </div>
+                            <div style="margin-right: 25px;">
+                                <span style="display: inline-block; width: 20px; height: 20px; border-radius: 50%; vertical-align:central; background-color: #50fa7d;"></span>
+                                <span> - Низкий уровень важности</span>
+                            </div>
 
-                @{
-                    var role = User.Claims.FirstOrDefault(x => x.Value == "Пользователь");
-                    if (role == null)
-                    {
-                        <a asp-controller="ProjectTasks" asp-action="TaskCreate" class="btn btn-dark">Создать задачу</a>
-                    }
-                }
+                            @{
+                                var role = User.Claims.FirstOrDefault(x => x.Value == "Пользователь");
+                                if (role == null)
+                                {
+                                    <a asp-controller="ProjectTasks" asp-action="TaskCreate" class="btn btn-dark">Создать задачу</a>
+                                }
+                            }
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-</footer>
+</div>

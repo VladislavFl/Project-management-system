@@ -38,19 +38,23 @@
                             <input type="submit" value="Изменить" class="btn btn-outline-dark mr-2" />
                         </form>
 
-                        <form style="margin: 5px;" asp-controller="ProjectTasks" asp-action="TaskDelete" method="post">
-                            <input asp-for="Id" hidden="hidden" />
-                            <input type="submit" value="Удалить" class="btn btn-danger" />
-                        </form>
+                        @if (Model != null)
+                        {
+                            <form style="margin: 5px;" method="post" action="@Url.Action("TaskDelete", "ProjectTasks", new { taskId = Model.Id })">
+                                <button type="submit" class="btn btn-danger">Удалить</button>
+                            </form>
+                        }
                     </div>
                 }
             }
 
             <div style="display: flex; justify-content: center;">
-                <form style="margin: 5px;" asp-controller="ProjectTasks" asp-action="TaskDelete" method="post">
-                    <input asp-for="Id" hidden="hidden" />
-                    <input type="submit" value="Выполнить" class="btn btn-dark" />
-                </form>
+                @if (Model != null)
+                {
+                    <form style="margin: 5px;" method="post" action="@Url.Action("TaskDelete", "ProjectTasks", new { taskId = Model.Id })">
+                        <button type="submit" class="btn btn-dark">Выполнить</button>
+                    </form>
+                }
                 <form style="margin: 5px;" asp-controller="ProjectTasks" asp-action="Index" method="post">
                     <input type="submit" value="Назад к списку" class="btn btn-outline-dark mr-2" />
                 </form>

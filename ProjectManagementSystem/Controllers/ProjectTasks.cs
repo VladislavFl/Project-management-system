@@ -90,14 +90,14 @@ namespace ProjectManagementSystem.Controllers
         public async Task<IActionResult> TaskUpdate(Tasks tasks)
         {
             await _projectTasksService.EditTaskAsync(tasks);
-            return RedirectToAction("TaskDetail", new { _currentTaskId });
+            return RedirectToAction("Index", new { _currentTaskId });
         }
 
         [Authorize(Roles = "Администратор, Пользователь, Владелец проекта")]
         [HttpPost]
-        public async Task<IActionResult> TaskDelete(Tasks tasks)
+        public async Task<IActionResult> TaskDelete(Guid taskId)
         {
-            await _projectTasksService.DeleteTaskAsync(tasks.Id);
+            await _projectTasksService.DeleteTaskAsync(taskId);
             return RedirectToAction("Index");
         }
     }
