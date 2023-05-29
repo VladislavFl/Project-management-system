@@ -10,15 +10,15 @@
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-dark back-color border-bottom box-shadow mb-3">
-            <div class="container">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark back-color border-bottom box-shadow mb-3">
+            <div class="container-fluid">
                 <img src="~/images/logo.png" alt="Logo" height="45">
                 <a class="navbar-brand text-light mr-md-6" asp-area="" asp-controller="ProjectTasks" asp-action="Index">Project Flow</a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
                             <a class="nav-link text-light" asp-area="" asp-controller="ProjectTasks" asp-action="Index">Задачи</a>
@@ -31,10 +31,7 @@
                         <li class="nav-item">
                             <a class="nav-link text-light" asp-area="" asp-controller="Profile" asp-action="UpdateUser">Профиль</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-light"> | </a>
-                        </li>
-                        <li class="nav-item">
+                        <li class="nav nav-pills">
                             <a class="nav-link text-light" asp-area="" asp-controller="Account" asp-action="LogOut">Выйти</a>
                         </li>
                     </ul>

@@ -46,7 +46,17 @@ namespace ProjectManagementSystem.Controllers
             ViewBag.Status = new SelectList(_projectService.FillingKIIStatus(), "Key", "Value");
             _currentProjectId = projectId;
             ViewBag.ProjectTeam = await _userService.GetProjectTeam(projectId);
-            return View(await _projectService.GetProjectsAsync(projectId));
+            var userEmail = HttpContext.User.Identity?.Name!;
+            var user = await _userService.GetUserAsync(userEmail);
+            ViewBag.CurrentUserId = user.Id;
+
+            var project = await _projectService.GetProjectsAsync(projectId);
+            if (project != null)
+            {
+                var owner = await _userService.GetProjectOwner((Guid)project.ProjectOwnerId);
+                ViewBag.OwnerEmail = owner.EmailAddress;
+            }
+            return View(project);
         }
 
         [Authorize(Roles = "Администратор, Владелец проекта")]
@@ -96,6 +106,16 @@ namespace ProjectManagementSystem.Controllers
         public async Task<IActionResult> ProjectUpdate(ProjectTeamViewModel model)
         {
             var projectId = await _projectService.EditProjectAsync(model);
+
+            // заполнение projectId у выбранных в выпадающем списке пользователей
+            string[] selectedValues = Request.Form["teamList"];
+            if (selectedValues != null)
+            {
+                foreach (var item in selectedValues)
+                {
+                    await _userService.EditUserForProjectAsync(Guid.Parse(item), projectId);
+                }
+            }
             return RedirectToAction("ProjectDetail", new { projectId });
         }
 

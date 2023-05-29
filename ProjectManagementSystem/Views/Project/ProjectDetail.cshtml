@@ -7,60 +7,90 @@
     </header>
 
     <main>
-        <h2 class="text-body">Описание проекта</h2>
-        <p class="fs-5 col-md-8">@Model.Description</p>
+        <div class="row g-3 border border-dark rounded">
+            <h2 class="text-body">Описание проекта</h2>
+            <p class="fs-5">@Model.Description</p>
+        </div>
 
         <hr class="col-3 col-md-2 mb-5">
 
-        <div class="row g-5">
-            <div class="col-md-6">
+        <div class="row g-3">
+            <div class="col-md-6 border border-dark rounded">
+                <h2 class="text-body-emphasis">Репозиторий на GitHub</h2>
+                <h5><a href="@Model.GitUrl" style="word-wrap: break-word;">@Model.GitUrl</a></h5>
+            </div>
+
+            <div class="col-md-2"></div>
+
+            <div class="col-md-4 border border-dark rounded float-right">
+                <h2 class="text-body-emphasis">Аттестация КИИ</h2>
+                @if (@Model.Status == 0)
+                {
+                    <div>
+                        <p>Статус: Нет аттестации</p>
+                        <span style="display: inline-block; width: 20px; height: 20px; border-radius: 50%; vertical-align:bottom; background-color: #fa5050;"></span>
+                        <br></br>
+                    </div>
+                }
+                @if (@Model.Status == 1)
+                {
+                    <div class="border border-dark rounded">
+                        <p>Статус: Ожидание</p>
+                        <span style="display: inline-block; width: 20px; height: 20px; border-radius: 50%; vertical-align:bottom; background-color: #8f8f8f"></span>
+                        <br></br>
+                    </div>
+                }
+                @if (@Model.Status == 2)
+                {
+                    <div class="border border-dark rounded">
+                        <p>Статус: Отправлено</p>
+                        <span style="display: inline-block; width: 20px; height: 20px; border-radius: 50%; vertical-align:bottom; background-color: #5485e8;"></span>
+                        <br></br>
+                    </div>
+                }
+                @if (@Model.Status == 3)
+                {
+                    <div>
+                        <p>Статус: В обработке</p>
+                        <span style="display: inline-block; width: 20px; height: 20px; border-radius: 50%; vertical-align:bottom; background-color: #fad850"></span>
+                        <br></br>
+                    </div>
+                }
+                @if (@Model.Status == 4)
+                {
+                    <div class="border border-dark rounded">
+                        <p>Статус: Пройдено</p>
+                        <span style="display: inline-block; width: 20px; height: 20px; border-radius: 50%; vertical-align:bottom; background-color: #50fa7d;"></span>
+                        <br></br>
+                    </div>
+                }
+            </div>
+
+            <div class="col-md-6 border border-dark rounded">
                 <h2 class="text-body-emphasis">Состав команды</h2>
+                <h5>Владелец проекта</h5>
+                <div class="row">
+                    <div class="col-sm">@Model.ProjectOwnerName</div>
+                    <div class="col-sm">@ViewBag.OwnerEmail</div>
+                </div>
                 @if (ViewBag.ProjectTeam != null)
                 {
+                    <h5>Разработчики</h5>
                     @foreach (var item in ViewBag.ProjectTeam)
                     {
-                        <p>@item.Name</p>
+                        <div class="row">
+                            <div class="col-sm">@item.Name</div>
+                            <div class="col-sm">@item.EmailAddress</div>
+                        </div>
+                        <hr>
                     }
                 }
             </div>
 
-            <div class="col-md-6">
-                <h2 class="text-body-emphasis">Аттестация КИИ</h2>
-                @if (@Model.Status == 0)
-                {
-                    <p>Статус: Нет аттестации</p>
-                    <span style="display: inline-block; width: 20px; height: 20px; border-radius: 50%; vertical-align:bottom; background-color: #fa5050;"></span>
-                }
-                @if (@Model.Status == 1)
-                {
-                    <p>Статус: Ожидание</p>
-                    <span style="display: inline-block; width: 20px; height: 20px; border-radius: 50%; vertical-align:bottom; background-color: #8f8f8f"></span>
-                }
-                @if (@Model.Status == 2)
-                {
-                    <p>Статус: Отправлено</p>
-                    <span style="display: inline-block; width: 20px; height: 20px; border-radius: 50%; vertical-align:bottom; background-color: #5485e8;"></span>
-                }
-                @if (@Model.Status == 3)
-                {
-                    <p>Статус: В обработке</p>
-                    <span style="display: inline-block; width: 20px; height: 20px; border-radius: 50%; vertical-align:bottom; background-color: #fad850"></span>
-                }
-                @if (@Model.Status == 4)
-                {
-                    <p>Статус: Пройдено</p>
-                    <span style="display: inline-block; width: 20px; height: 20px; border-radius: 50%; vertical-align:bottom; background-color: #50fa7d;"></span>
-                }
-            </div>
-
-            <div class="col-md-6">
-                <h2 class="text-body-emphasis">Репозиторий на GitHub</h2>
-                <h5><a href="@Model.GitUrl">@Model.GitUrl</a></h5>
-            </div>
-
             @{
                 var role = User.Claims.FirstOrDefault(x => x.Value == "Администратор");
-                if (role != null)
+
+                if (role != null || ViewBag.CurrentUserId == Model.ProjectOwnerId)
                 {
                     <div style="display: flex; justify-content: left;">
                         <form style="margin-right: 5px;" asp-controller="Project" asp-action="ProjectUpdate" method="get">

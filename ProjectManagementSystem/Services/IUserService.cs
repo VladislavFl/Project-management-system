@@ -28,6 +28,7 @@ namespace ProjectManagementSystem.Services
         Task<bool> CheckUserByLoginAndPasswordAsync(string login, string password);
         Task DeleteUserAsync(Guid userId);
         Task<List<User>> GetProjectTeam(Guid projectId);
+        Task<User> GetProjectOwner(Guid projectOwnerId);
     }
 
     public class UserService : IUserService
@@ -166,6 +167,11 @@ namespace ProjectManagementSystem.Services
         public async Task<List<User>> GetProjectTeam(Guid projectId)
         {
             return await _db.Users.Where(x => x.ProjectId == projectId).ToListAsync();
+        }
+
+        public async Task<User> GetProjectOwner(Guid projectOwnerId)
+        {
+            return await _db.Users.FirstOrDefaultAsync(x => x.Id == projectOwnerId);
         }
     }
 }
