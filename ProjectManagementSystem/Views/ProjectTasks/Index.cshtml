@@ -17,62 +17,38 @@
 
 <div>
     <div class="row w-100 m-0">
-        <div class="table-responsive">
-            <h1 class="display-6 text-center">Список задач</h1>
-            <table class="table table-striped border">
-                <thead>
-                    <tr>
-                        <th scope="col">
-                            <a>Название</a>
-                        </th>
-                        <th scope="col">
-                            <a>Приоритет</a>
-                        </th>
-                        <th scope="col">
-                            <a>Техническое задание</a>
-                        </th>
-                        <th scope="col">
-                            <a>Исполнитель</a>
-                        </th>
-                        <th class="col-1" scope="col"></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var item in Model)
-                    {
-                        string val = string.Empty;
-                        string priorety = string.Empty;
+        <h1 class="display-6 text-center">Список задач</h1>
+        <div class="row mx-auto">
+            @foreach (var item in Model)
+            {
+                string val = string.Empty;
+                string priorety = string.Empty;
 
-                        if (item.Priorety == 1)
-                        {
-                            val = "high-priority";
-                            priorety = "Критически важно";
-                        }
-                        else if (item.Priorety == 2)
-                        {
-                            val = "medium-priority";
-                            priorety = "Средний уровень важности";
-                        }
-                        else if (item.Priorety == 3)
-                        {
-                            val = "low-priority";
-                            priorety = "Низкий уровень важности";
-                        }
-                        <tr class=@val>
-                            <td>@item.Name</td>
-                            <td>@priorety</td>
-                            <td>@item.Description</td>
-                            <td>@item.User.Name</td>
-                            <td>
-                                <form method="get" asp-controller="ProjectTasks" asp-action="TaskDetail">
-                                    <input type="hidden" name="taskId" value="@item.Id">
-                                    <button class="btn btn-outline-dark" type="submit">Подробнее</button>
-                                </form>
-                            </td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
+                if (item.Priorety == 1)
+                {
+                    val = "high-priority";
+                    priorety = "Критически важно";
+                }
+                else if (item.Priorety == 2)
+                {
+                    val = "medium-priority";
+                    priorety = "Средний уровень важности";
+                }
+                else if (item.Priorety == 3)
+                {
+                    val = "low-priority";
+                    priorety = "Низкий уровень важности";
+                }
+                <div class="col-sm-4 mb-3">
+                    <div class="card" style="background: @val;">
+                        <div class="card-body">
+                            <h5 class="card-title">@item.Name</h5>
+                            <p class="card-text">@item.Description</p>
+                            <a href="#" class="btn btn-primary">Выполнить</a>
+                        </div>
+                    </div>
+                </div>
+            }
         </div>
     </div>
 </div>
