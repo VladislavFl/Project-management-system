@@ -111,7 +111,7 @@ namespace ProjectManagementSystem.Controllers
           
             // заполнение projectId у выбранных в выпадающем списке пользователей
             string[] selectedValues = Request.Form["teamList"];
-            if (selectedValues != null)
+            if (selectedValues != null && selectedValues.Count() > 0)
             {
                 foreach (var item in selectedValues)
                 {

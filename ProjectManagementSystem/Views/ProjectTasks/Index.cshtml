@@ -19,63 +19,122 @@
     <div class="row w-100 m-0">
         <h1 class="display-6 text-center">Список задач</h1>
         <div class="row mx-auto">
-            @foreach (var item in Model)
-            {
-                string val = string.Empty;
-                string priorety = string.Empty;
+            <div class="d-flex flex-column justify-content-start">
+                <div class="row">
+                    <div class="col-sm-4">
+                        @foreach (var item in Model.Where(x => x.Priorety == 1))
+                        {
+                            var descrLength = @item.Description.Length;
+                            string descr = string.Empty;
+                            if (descrLength > 150)
+                            {
+                                descr = @item.Description.Substring(0, 150);
+                                descr += "...";
+                            }
+                            else
+                            {
+                                descr = item.Description;
+                            }
 
-                var descrLength = @item.Description.Length;
-                string descr = string.Empty;
-                if (descrLength > 150)
-                {
-                    descr = @item.Description.Substring(0, 150);
-                    descr += "...";
-                }
-                else
-                {
-                    descr = item.Description;
-                }
+                            <div class="card high-priority">
+                                <div class="card-body">
+                                    <h5 class="card-title">@item.Name</h5>
+                                    <p class="card-text">@descr</p>
 
-                if (item.Priorety == 1)
-                {
-                    val = "high-priority";
-                    priorety = "Критически важно";
-                }
-                else if (item.Priorety == 2)
-                {
-                    val = "medium-priority";
-                    priorety = "Средний уровень важности";
-                }
-                else if (item.Priorety == 3)
-                {
-                    val = "low-priority";
-                    priorety = "Низкий уровень важности";
-                }
-                <div class="col-sm-4 mb-3 card-group">
-                    <div class="card @val">
-                        <div class="card-body">
-                            <h5 class="card-title">@item.Name</h5>
-                            <p class="card-text">@descr</p>
-
-                            <div style="display: flex; justify-content: left;">
-                                <form method="post" action="@Url.Action("TaskDelete", "ProjectTasks", new { taskId = item.Id })">
-                                    <button type="submit" class="btn btn-dark">Выполнить</button>
-                                </form>
-                                <form style="margin-left: 5px;" method="get" asp-controller="ProjectTasks" asp-action="TaskDetail">
-                                    <input type="hidden" name="taskId" value="@item.Id">
-                                    <button class="btn btn-outline-dark" type="submit">Подробнее</button>
-                                </form>
+                                    <div style="display: flex; justify-content: left;">
+                                        <form method="post" action="@Url.Action("TaskDelete", "ProjectTasks", new { taskId = item.Id })">
+                                            <button type="submit" class="btn btn-dark">Выполнить</button>
+                                        </form>
+                                        <form style="margin-left: 5px;" method="get" asp-controller="ProjectTasks" asp-action="TaskDetail">
+                                            <input type="hidden" name="taskId" value="@item.Id">
+                                            <button class="btn btn-outline-dark" type="submit">Подробнее</button>
+                                        </form>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
+                            <br/>
+                        }
+                    </div>
+
+
+                    <div class="col-sm-4">
+                        @foreach (var item in Model.Where(x => x.Priorety == 2))
+                        {
+                            var descrLength = @item.Description.Length;
+                            string descr = string.Empty;
+                            if (descrLength > 150)
+                            {
+                                descr = @item.Description.Substring(0, 150);
+                                descr += "...";
+                            }
+                            else
+                            {
+                                descr = item.Description;
+                            }
+
+                            <div class="card medium-priority">
+                                <div class="card-body">
+                                    <h5 class="card-title">@item.Name</h5>
+                                    <p class="card-text">@descr</p>
+
+                                    <div style="display: flex; justify-content: left;">
+                                        <form method="post" action="@Url.Action("TaskDelete", "ProjectTasks", new { taskId = item.Id })">
+                                            <button type="submit" class="btn btn-dark">Выполнить</button>
+                                        </form>
+                                        <form style="margin-left: 5px;" method="get" asp-controller="ProjectTasks" asp-action="TaskDetail">
+                                            <input type="hidden" name="taskId" value="@item.Id">
+                                            <button class="btn btn-outline-dark" type="submit">Подробнее</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                            <br />
+                        }
+                    </div>
+
+
+                    <div class="col-sm-4">
+                        @foreach (var item in Model.Where(x => x.Priorety == 3))
+                        {
+                            var descrLength = @item.Description.Length;
+                            string descr = string.Empty;
+                            if (descrLength > 150)
+                            {
+                                descr = @item.Description.Substring(0, 150);
+                                descr += "...";
+                            }
+                            else
+                            {
+                                descr = item.Description;
+                            }
+
+                            <div class="card low-priority">
+                                <div class="card-body">
+                                    <h5 class="card-title">@item.Name</h5>
+                                    <p class="card-text">@descr</p>
+
+                                    <div style="display: flex; justify-content: left;">
+                                        <form method="post" action="@Url.Action("TaskDelete", "ProjectTasks", new { taskId = item.Id })">
+                                            <button type="submit" class="btn btn-dark">Выполнить</button>
+                                        </form>
+                                        <form style="margin-left: 5px;" method="get" asp-controller="ProjectTasks" asp-action="TaskDetail">
+                                            <input type="hidden" name="taskId" value="@item.Id">
+                                            <button class="btn btn-outline-dark" type="submit">Подробнее</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                            <br />
+                        }
                     </div>
                 </div>
-            }
+            </div>
         </div>
     </div>
-    </br>
-    </br>
-    </br>
-    </br>
+    <br />
+    <br />
+    <br />
+    <br />
 </div>
 
 <div class="container-fluid">
