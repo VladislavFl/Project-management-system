@@ -88,7 +88,7 @@ namespace ProjectManagementSystem.Controllers
                     await _userService.EditUserForProjectAsync(Guid.Parse(item), projectId);
                 }
             }
-            return RedirectToAction("Index", new { projectId });
+            return RedirectToAction("Index");
         }
 
         [Authorize(Roles = "Администратор, Владелец проекта")]

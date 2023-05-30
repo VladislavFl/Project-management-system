@@ -18,6 +18,8 @@ namespace ProjectManagementSystem.Models
         [Required(ErrorMessage = "Поле не может быть пустым")]
         public Guid? UserId { get; set; }
         public User User { get; set; }
+
+        [Required(ErrorMessage = "Поле не может быть пустым")]
         public Guid? ProjectId { get; set; }
         public Project Project { get; set; }
     }

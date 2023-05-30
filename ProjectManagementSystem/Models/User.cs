@@ -13,5 +13,6 @@ namespace ProjectManagementSystem.Models
         public Role Role { get; set; }
         public Guid? ProjectId { get; set; }
         public Project? Project { get; set; }
+        public Guid? ProjectKey { get; set; }
     }
 }

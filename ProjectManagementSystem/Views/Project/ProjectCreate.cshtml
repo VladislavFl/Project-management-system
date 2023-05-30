@@ -1,5 +1,6 @@
 ﻿@model ProjectManagementSystem.ViewModels.Project.ProjectTeamViewModel
 
+
 <div class="container">
     <div class="row">
         <div class="col-md-4"></div>
@@ -8,7 +9,7 @@
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <div class="form-group">
                     <label asp-for="Name">Название</label>
-                    <input asp-for="Name" class="form-control"/>
+                    <input asp-for="Name" class="form-control" />
                     <span asp-validation-for="Name" style="color: red;"></span>
                 </div>
                 <div class="form-group">
@@ -18,7 +19,8 @@
                 </div>
                 <div>
                     <label>Выбрать участника</label>
-                    <select name="teamList" class="form-select" multiple asp-items="@ViewBag.Team"></select>
+                    <select class="form-select teamList" name="teamList" multiple="multiple" asp-items="@ViewBag.Team">
+                    </select>
                     <span style="color: red;"></span>
                 </div>
                 <div class="form-group">
@@ -38,7 +40,7 @@
                 </div>
                 <br />
                 <div class="form-group text-center">
-                    <input type="submit" value="Создать" class="btn btn-dark"/>
+                    <input type="submit" value="Создать" class="btn btn-dark" />
                 </div>
             </form>
             <div style="display: flex; justify-content: center;">
@@ -52,6 +54,11 @@
 </div>
 
 @section scripts{
-        <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
-        <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('.teamList').select2();
+        });
+    </script>
 }

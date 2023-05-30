@@ -58,7 +58,7 @@ namespace ProjectManagementSystem.Controllers
 
             var userEmail = HttpContext.User.Identity?.Name!;
             var user = await _userService.GetUserByLoginAsync(userEmail);
-            ViewBag.Projects = new SelectList(await _userService.GetProjectForTaskAsync(user.Id), "ProjectOwnerId", "Name");
+            ViewBag.Projects = new SelectList(await _userService.GetProjectForTaskAsync(user.Id), "Id", "Name");
 
             return View();
         }

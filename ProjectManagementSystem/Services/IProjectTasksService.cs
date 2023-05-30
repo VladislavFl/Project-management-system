@@ -52,9 +52,11 @@ namespace ProjectManagementSystem.Services
         {
             await _db.Tasks.AddAsync(tasks);
             var project = _db.Projects.Where(x => x.Id == Guid.Parse(projectId)).FirstOrDefault();
-            if (project != null) 
+            if (project != null)
+            {
                 tasks.Project = project;
-            await _db.SaveChangesAsync();
+                await _db.SaveChangesAsync();
+            }
 
             return tasks.Id;
         }

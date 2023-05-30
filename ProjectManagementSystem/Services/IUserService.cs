@@ -130,8 +130,7 @@ namespace ProjectManagementSystem.Services
         {
             var user = _db.Users.Where(x => x.Id == userId).FirstOrDefault();
             var project = _db.Projects.Where(x => x.Id == projectId).FirstOrDefault();
-            user.Project = project;
-            user.ProjectId = userId;
+            user.ProjectKey = projectId;
 
             _db.Users.Update(user);
             await _db.SaveChangesAsync();
@@ -166,7 +165,7 @@ namespace ProjectManagementSystem.Services
 
         public async Task<List<User>> GetProjectTeam(Guid projectId)
         {
-            return await _db.Users.Where(x => x.ProjectId == projectId).ToListAsync();
+            return await _db.Users.Where(x => x.ProjectKey == projectId).ToListAsync();
         }
 
         public async Task<User> GetProjectOwner(Guid projectOwnerId)
