@@ -41,9 +41,14 @@ namespace ProjectManagementSystem.Services
 
         public async Task<IEnumerable<Project>> GetAllProjectsByUserAsync(string email)
         {
-            return await _db.Projects.Include(p => p.User)
-                .Where(p => p.User.EmailAddress == email)
-                .AsNoTracking().ToListAsync();
+            var proj = await _db.Users.Where(x => x.EmailAddress == email && x.ProjectKey != null).ToListAsync();
+            List<Project> projectList = new ();
+            foreach (var item in proj)
+            {
+                var val = await _db.Projects.Where(x => x.Id == item.ProjectKey).ToListAsync();
+                projectList.AddRange(val);
+            }
+            return projectList;
         }
 
         public async Task<Project> GetProjectsAsync(Guid projectsId)
