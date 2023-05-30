@@ -22,7 +22,7 @@ namespace ProjectManagementSystem.Services
         Task<Guid> AddUserAsync(User user);
         Task AddUserAsync(RegisterViewModel model);
         Task<Guid> EditUserAsync(User user);
-        Task<Guid> EditUserForProjectAsync(Guid id, Guid projectId);
+        Task<Guid> EditUserForProjectAsync(Guid id, Guid? projectId);
         Task<IEnumerable<Role>> GetAllRoleAsync();
         Task<bool> CheckUserByLoginAsync(string login);
         Task<bool> CheckUserByLoginAndPasswordAsync(string login, string password);
@@ -126,7 +126,7 @@ namespace ProjectManagementSystem.Services
             return user.Id;
         }
 
-        public async Task<Guid> EditUserForProjectAsync(Guid userId, Guid projectId)
+        public async Task<Guid> EditUserForProjectAsync(Guid userId, Guid? projectId)
         {
             var user = _db.Users.Where(x => x.Id == userId).FirstOrDefault();
             var project = _db.Projects.Where(x => x.Id == projectId).FirstOrDefault();

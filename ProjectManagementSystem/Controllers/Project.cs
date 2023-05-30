@@ -98,6 +98,7 @@ namespace ProjectManagementSystem.Controllers
             ViewBag.Team = new SelectList(await _userService.GetUserForAddingToProjectAsync(), "Id", "Name");
             ViewBag.KII = new SelectList(_projectService.FillingKII(), "Key", "Value");
             ViewBag.Status = new SelectList(_projectService.FillingKIIStatus(), "Key", "Value");
+            ViewBag.CurrentTeam = await _userService.GetProjectTeam(_currentProjectId);
             return View(await _projectService.GetProjectsAsync(_currentProjectId));
         }
 
@@ -106,7 +107,8 @@ namespace ProjectManagementSystem.Controllers
         public async Task<IActionResult> ProjectUpdate(ProjectTeamViewModel model)
         {
             var projectId = await _projectService.EditProjectAsync(model);
-
+            var currTeam = await _userService.GetProjectTeam(_currentProjectId);
+          
             // заполнение projectId у выбранных в выпадающем списке пользователей
             string[] selectedValues = Request.Form["teamList"];
             if (selectedValues != null)
@@ -114,8 +116,19 @@ namespace ProjectManagementSystem.Controllers
                 foreach (var item in selectedValues)
                 {
                     await _userService.EditUserForProjectAsync(Guid.Parse(item), projectId);
+                    var newUser = currTeam.FirstOrDefault(x => x.Id == Guid.Parse(item));
+                    if (newUser != null)
+                    {
+                        currTeam.Remove(newUser);
+                    }
+                }
+
+                foreach (var item in currTeam)
+                {
+                    await _userService.EditUserForProjectAsync(item.Id, null);
                 }
             }
+
             return RedirectToAction("ProjectDetail", new { projectId });
         }
 
